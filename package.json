@@ -1,0 +1,43 @@
+{
+  "name": "quizar-domain",
+  "version": "0.0.1",
+  "description": "Quizar core module",
+  "main": "./lib/index.js",
+  "types": "./types/index.d.ts",
+  "scripts": {
+    "pretest": "npm run tsc && npm run test-tsc",
+    "test": "mocha test-lib/*.js",
+    "tsc": "tsc",
+    "tscw": "tsc -w",
+    "test-tsc": "cd ./test && tsc && cd ..",
+    "preversion": "npm run tsc",
+    "postversion": "git push --follow-tags",
+    "prepublish": "npm run tsc"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quizar/domain-ts.git"
+  },
+  "keywords": [
+    "quiz",
+    "quizzes",
+    "quizar",
+    "domain",
+    "core"
+  ],
+  "author": "Dumitru Cantea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quizar/domain-ts/issues"
+  },
+  "homepage": "https://github.com/quizar/domain-ts#readme",
+  "devDependencies": {
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.5",
+    "mocha": "^3.2.0",
+    "typescript": "^2.3.4"
+  }
+}
