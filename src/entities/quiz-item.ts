@@ -1,8 +1,10 @@
 
-export type PropertyValueType = 'S' | 'N' | 'Q'
-export type PropertyValueDataType = Entity | string | number
+// import { Entity } from './entity'
 
-export type Entity = {
+export type PropertyValueType = 'S' | 'N' | 'Q'
+export type PropertyValueDataType = WikiEntity | string | number
+
+export type WikiEntity = {
     id: string
     lang: string
     label: string
@@ -23,7 +25,7 @@ export type PropertyValue = {
 
 export type QuizItem = {
     id?: string
-    subject: Entity
+    subject: WikiEntity
     property: Property
     value: PropertyValue
     quizIds?: string[]
