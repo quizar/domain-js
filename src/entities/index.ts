@@ -4,29 +4,29 @@ import { IPlainObject, createEnum } from '../utils'
 export const PropertyValueType = createEnum(['STRING', 'NUMBER', 'ENTITY'])
 export type PropertyValueType = keyof typeof PropertyValueType
 
-export const QuoteItemTarget = createEnum(['PROPERTY', 'QUALIFIER'])
-export type QuoteItemTarget = keyof typeof QuoteItemTarget
+export const QuizTarget = createEnum(['PVALUE', 'QVALUE'])
+export type QuizTarget = keyof typeof QuizTarget
 
 export type EntityCategory = {
     id?: string
-    label?: string
-    aliases?: string[]
+    name?: string
 }
 
 export type Image = {
     // format: ImageFormat
-    data: string
+    data?: string
     propertyId?: string
 }
 
 export type PropertyQualifier = {
-    id: string
-    value: string
+    id?: string
+    value?: string
+    type?: PropertyValueType
 }
 
 export type PropertyValue = {
-    type: PropertyValueType
-    value: string
+    type?: PropertyValueType
+    value?: string
     entity?: WikiEntity
 }
 
@@ -45,11 +45,10 @@ export type WikiEntity = {
 
 export type QuizItem = {
     id?: string
-    entity: WikiEntity
-    propertyId: string
-    value: PropertyValue
+    entity?: WikiEntity
+    propertyId?: string
+    value?: PropertyValue
     qualifier?: PropertyQualifier
-    target: QuoteItemTarget
 
     title?: string
     question?: string
@@ -68,10 +67,12 @@ export type QuizItemInfo = {
     title?: string
     question?: string
     description?: string
+    target?: QuizTarget
 }
 
 export type Quiz = {
     id?: string
+    target: QuizTarget
     lang?: string
     title?: string
     question?: string
