@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/quizar/domain-ts.git"
+    "url": "git+https://github.com/quizar/domain-js.git"
   },
   "keywords": [
     "quiz",
@@ -30,9 +30,9 @@
   "author": "Dumitru Cantea",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/quizar/domain-ts/issues"
+    "url": "https://github.com/quizar/domain-js/issues"
   },
-  "homepage": "https://github.com/quizar/domain-ts#readme",
+  "homepage": "https://github.com/quizar/domain-js#readme",
   "devDependencies": {
     "@types/bluebird": "^3.5.5",
     "@types/mocha": "^2.2.41",

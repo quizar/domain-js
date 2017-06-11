@@ -1,9 +1,10 @@
 
-import { Quiz } from '../entities/quiz'
-import { Promise, IBaseRepository } from '../utils'
+import { Quiz } from '../entities'
+import { Promise } from '../utils'
 import { UseCaseSet } from './use-case-set'
+import { IRepository } from './repository';
 
-export interface IQuizRepository extends IBaseRepository<Quiz> {
+export interface IQuizRepository extends IRepository<Quiz> {
 
 }
 

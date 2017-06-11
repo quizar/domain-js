@@ -1,7 +1,8 @@
 
-import { Promise, IBaseRepository } from '../utils'
+import { Promise } from '../utils';
+import { IRepository } from './repository';
 
-export class UseCaseSet<T, R extends IBaseRepository<T>> {
+export class UseCaseSet<T, R extends IRepository<T>> {
     protected rep: R
 
     constructor(rep: R) {

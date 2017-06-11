@@ -1,9 +1,10 @@
 
-import { Topic } from '../entities/topic'
-import { Promise, IBaseRepository } from '../utils'
-import { UseCaseSet } from './use-case-set'
+import { Topic } from '../entities';
+import { Promise } from '../utils';
+import { UseCaseSet } from './use-case-set';
+import { IRepository } from './repository';
 
-export interface ITopicRepository extends IBaseRepository<Topic> {
+export interface ITopicRepository extends IRepository<Topic> {
 
 }
 
