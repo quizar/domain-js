@@ -50,6 +50,8 @@ export type QuizItem = {
     value?: PropertyValue
     qualifier?: PropertyQualifier
 
+    lang?: string
+
     title?: string
     question?: string
     description?: string
