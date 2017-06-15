@@ -1,13 +1,32 @@
 
-import { QuizItem } from '../entities';
+import { QuizItem, WikiEntity } from '../entities';
 import { Promise } from '../utils';
 import { UseCaseSet } from './use-case-set';
-import { IRepository } from './repository';
+import { IRepository, IQuizItemRepository, IWikiEntityRepository } from './repository';
+import { WikiEntityUseCases } from './wiki-entity';
 
-export interface IQuizItemRepository extends IRepository<QuizItem> {
+export class QuizItemUseCases extends UseCaseSet<QuizItem, IQuizItemRepository> {
 
-}
+    constructor(rep: IQuizItemRepository, private entityUseCases: WikiEntityUseCases) {
+        super(rep);
+    }
 
-export class QuizItemUseCases extends UseCaseSet<QuizItem, IQuizItemRepository>{
+    create(data: QuizItem): Promise<QuizItem> {
+        if (!data) {
+            return Promise.reject(new Error('INvalid data'));
+        }
+        const tasks = [];
 
+        if (data.entity) {
+            tasks.push(this.entityUseCases.create(data.entity));
+        }
+
+        if (data.value && data.value.entity) {
+            tasks.push(this.entityUseCases.create(data.value.entity));
+        }
+
+        return Promise.all(tasks).then(() => {
+            return super.create(data);
+        });
+    }
 }

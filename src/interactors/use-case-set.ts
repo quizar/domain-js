@@ -2,7 +2,7 @@
 import { Promise } from '../utils';
 import { IRepository } from './repository';
 
-export class UseCaseSet<T, R extends IRepository<T>> {
+export class UseCaseSet<T, R extends IRepository<T>> implements IRepository<T> {
     protected rep: R
 
     constructor(rep: R) {
@@ -10,9 +10,6 @@ export class UseCaseSet<T, R extends IRepository<T>> {
     }
     
     create(data: T): Promise<T> {
-        if (!data) {
-            return Promise.reject(new Error('Invalid data'));
-        }
         return this.rep.create(data)
     }
 

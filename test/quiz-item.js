@@ -1,5 +1,5 @@
 
-const { QuizItemUseCases, IQuizItemRepository, QuizItem } = require('../lib')
+const { QuizItemUseCases, WikiEntityUseCases, QuizItem } = require('../lib')
 const assert = require('assert')
 const Bluebird = require('bluebird')
 
@@ -15,7 +15,7 @@ class Repository {
     }
 }
 
-const quizItemUseCases = new QuizItemUseCases(new Repository())
+const quizItemUseCases = new QuizItemUseCases(new Repository(), new WikiEntityUseCases(new Repository()))
 
 describe('QuizItem', function () {
     const rep = new Repository();
