@@ -89,6 +89,8 @@ export type Quiz = {
 export type Topic = {
     id?: string
     name: string
+    entityId?: string
+    entity?: WikiEntity
     description?: string
     createdAt?: number
     updatedAt?: number

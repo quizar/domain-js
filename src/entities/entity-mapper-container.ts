@@ -1,8 +1,13 @@
 
 import { IPlainObject } from '../utils';
+import { CodeError } from '../errors';
 
 export type MapInfo = IPlainObject<string | string[]>;
 export type TypeMapInfo = { toDomainEntity: MapInfo, fromDomainEntity: MapInfo };
+
+export interface EntityTypeMapperBuild {
+    add(from: string, to?: string | string[]): void
+}
 
 export class EntityMapperContainer {
     private MAPPERS_INFO: IPlainObject<TypeMapInfo> = {};
@@ -17,13 +22,13 @@ export class EntityMapperContainer {
         return this.MAPPERS_INFO[typeName];
     }
 
-    createType(typeName: string): { add(from: string, to?: string | string[]): void } {
+    createType(typeName: string): EntityTypeMapperBuild {
         this.checkTypeName(typeName);
 
         const self = this;
 
         if (self.MAPPERS_INFO[typeName]) {
-            throw new Error('Name `' + typeName + '` exists!');
+            throw new CodeError({ message: 'Name `' + typeName + '` exists!' });
         }
         self.MAPPERS_INFO[typeName] = { toDomainEntity: {}, fromDomainEntity: {} };
 
@@ -39,7 +44,7 @@ export class EntityMapperContainer {
 
     private checkTypeName(name: string) {
         if (this.validTypeNames.indexOf(name) === -1) {
-            throw new Error('Invalid type name: ' + name);
+            throw new CodeError({ message: 'Invalid type name: ' + name });
         }
     }
 }

@@ -8,7 +8,7 @@ export class UseCaseSet<T, R extends IRepository<T>> implements IRepository<T> {
     constructor(rep: R) {
         this.rep = rep;
     }
-    
+
     create(data: T): Promise<T> {
         return this.rep.create(data)
     }
