@@ -9,15 +9,15 @@ export class UseCaseSet<T, R extends IRepository<T>> implements IRepository<T> {
         this.rep = rep;
     }
 
-    create(data: T): Promise<T> {
-        return this.rep.create(data)
+    create<O>(data: T, options?: O): Promise<T> {
+        return this.rep.create(data, options);
     }
 
-    update(data: T): Promise<T> {
-        return this.rep.update(data)
+    update<O>(data: T, options?: O): Promise<T> {
+        return this.rep.update(data, options);
     }
 
-    remove(id: string): Promise<boolean> {
-        return this.rep.remove(id)
+    remove<O>(id: string, options?: O): Promise<boolean> {
+        return this.rep.remove(id, options);
     }
 }

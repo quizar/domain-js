@@ -2,9 +2,9 @@
 import { QuizItem, WikiEntity } from '../entities';
 import { Promise } from '../utils';
 import { UseCaseSet } from './use-case-set';
-import { IRepository, IQuizItemRepository, IWikiEntityRepository } from './repository';
+import { IRepository, IQuizItemRepository } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
-import { DataValidationError, DataConflictError, catchErrorType } from '../errors';
+import { DataValidationError, DataConflictError, catchError } from '../errors';
 
 export class QuizItemUseCases extends UseCaseSet<QuizItem, IQuizItemRepository> {
 
@@ -19,11 +19,11 @@ export class QuizItemUseCases extends UseCaseSet<QuizItem, IQuizItemRepository> 
         const tasks = [];
 
         if (data.entity) {
-            tasks.push(this.entityUseCases.create(data.entity).catch(catchErrorType(DataConflictError)));
+            tasks.push(this.entityUseCases.create(data.entity).catch(catchError(DataConflictError)));
         }
 
         if (data.value && data.value.entity) {
-            tasks.push(this.entityUseCases.create(data.value.entity).catch(catchErrorType(DataConflictError)));
+            tasks.push(this.entityUseCases.create(data.value.entity).catch(catchError(DataConflictError)));
         }
 
         return Promise.all(tasks).then(() => {
