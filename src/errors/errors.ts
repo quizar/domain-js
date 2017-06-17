@@ -3,7 +3,7 @@ import { PlainObject } from '../utils';
 
 export interface ErrorDefaultData {
     statusCode?: number
-    message: string
+    message?: string
 }
 
 export interface ErrorData extends ErrorDefaultData {
