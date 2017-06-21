@@ -20,6 +20,7 @@ export class EntityMapper<DE, E> implements IEntityMapper<DE, E> {
     }
 
     fromDomainEntity(data: DE): E {
+        // console.log('map', this.fromEntityMap);
         return EntityMapper.fromDomainEntity<E, DE>(data, this.fromEntityMap);
     }
     toDomainEntity(data: E): DE {

@@ -35,7 +35,7 @@ export type WikiEntity = {
     types?: string[]
     pageTitle?: string
     extract?: string
-    categories?: WikiEntity[]
+    // categories?: WikiEntity[]
     slug?: string
     countQuizItems?: number
     countQuizzes?: number
@@ -56,7 +56,7 @@ export type QuizItem = {
     description?: string
     image?: Image
     
-    // topics?: WikiEntity[]
+    topics?: WikiEntity[]
 
     createdAt?: number
     updatedAt?: number
