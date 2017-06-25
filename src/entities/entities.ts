@@ -44,6 +44,7 @@ export type WikiEntity = {
 
 export type QuizItem = {
     id?: string
+    entityId?: string
     entity?: WikiEntity
     propertyId?: string
     value?: PropertyValue
@@ -57,6 +58,7 @@ export type QuizItem = {
     image?: Image
     
     topics?: WikiEntity[]
+    topicsIds?: string[]
 
     createdAt?: number
     updatedAt?: number
@@ -64,6 +66,7 @@ export type QuizItem = {
 
 export type QuizItemInfo = {
     order?: number
+    itemId?: string
     item?: QuizItem
     image?: Image
     title?: string
@@ -86,6 +89,7 @@ export type Quiz = {
     image?: Image
 
     topics?: WikiEntity[]
+    topicsIds?: string[]
 
     createdAt?: number
     updatedAt?: number
