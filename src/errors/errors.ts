@@ -76,3 +76,9 @@ export class DataValidationError extends DataError {
         super(data, { message: 'Validation error', statusCode: 400 });
     }
 }
+
+export class DataNotFoundError extends DataError {
+    constructor(data: ErrorData) {
+        super(data, { message: 'Data not found', statusCode: 404 });
+    }
+}

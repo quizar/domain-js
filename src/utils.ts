@@ -17,3 +17,7 @@ export function createEnum<T extends string>(o: Array<T>): {[K in T]: K} {
     return res;
   }, Object.create(null));
 }
+
+export function isEntityId(id: string) {
+  return /^Q\d+$/.test(id);
+}

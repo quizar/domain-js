@@ -17,6 +17,7 @@ export type PropertyQualifier = {
     id?: string
     value?: string
     type?: PropertyValueType
+    entity?: WikiEntity
 }
 
 export type PropertyValue = {

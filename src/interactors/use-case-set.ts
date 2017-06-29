@@ -1,25 +1,25 @@
 
 import { Bluebird } from '../utils';
-import { IRepository } from './repository';
+import { IRepository, RepAccessOptions } from './repository';
 
 export class UseCaseSet<T, R extends IRepository<T>> implements IRepository<T> {
 
     constructor(public readonly repository: R) {
     }
 
-    create<O>(data: T, options?: O): Bluebird<T> {
+    create(data: T, options?: RepAccessOptions): Bluebird<T> {
         return this.repository.create(data, options);
     }
 
-    update<O>(data: T, options?: O): Bluebird<T> {
+    update<O>(data: T, options?: RepAccessOptions): Bluebird<T> {
         return this.repository.update(data, options);
     }
 
-    remove<O>(id: string, options?: O): Bluebird<boolean> {
-        return this.repository.remove(id, options);
+    remove(id: string): Bluebird<boolean> {
+        return this.repository.remove(id);
     }
 
-    getById<O>(id: string, options?: O): Bluebird<T> {
+    getById<O>(id: string, options?: RepAccessOptions): Bluebird<T> {
         return this.repository.getById(id, options);
     }
 }
