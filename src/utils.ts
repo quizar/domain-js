@@ -1,10 +1,11 @@
 
-import * as Bluebird from 'bluebird'
+import * as Bluebird from 'bluebird';
+import * as _ from 'lodash';
 
-export const Promise = Bluebird
+export { Bluebird, _ }
 
 export type IPlainObject<T> = {
-    [index: string]: T
+  [index: string]: T
 }
 
 export type PlainObject = IPlainObject<any>

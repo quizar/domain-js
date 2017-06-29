@@ -1,6 +1,7 @@
 
+const debug = require('debug')('quizar-domain');
 import { QuizItem, WikiEntity } from '../entities';
-import { Promise } from '../utils';
+import { Bluebird, _ } from '../utils';
 import { UseCaseSet } from './use-case-set';
 import { IRepository, IQuizItemRepository } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
@@ -12,28 +13,36 @@ export class QuizItemUseCases extends UseCaseSet<QuizItem, IQuizItemRepository> 
         super(rep);
     }
 
-    create(data: QuizItem): Promise<QuizItem> {
+    create(data: QuizItem): Bluebird<QuizItem> {
         if (!data) {
-            return Promise.reject(new DataValidationError({ message: 'Invalid data' }));
+            return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
         }
-        const tasks = [];
+        let entities: WikiEntity[] = [];
 
         if (data.entity) {
-            tasks.push(this.entityUseCases.create(data.entity).catch(catchError(DataConflictError)));
+            entities.push(data.entity);
         }
 
         if (data.value && data.value.entity) {
-            tasks.push(this.entityUseCases.create(data.value.entity).catch(catchError(DataConflictError)));
+            entities.push(data.value.entity);
         }
 
         if (data.topics && data.topics.length) {
-            data.topics.forEach(topic => tasks.push(this.entityUseCases.create(topic).catch(catchError(DataConflictError))));
+            const utopics = _.uniqBy(data.topics, 'id');
+            if (utopics.length !== data.topics.length) {
+                return Bluebird.reject(new DataValidationError({ message: '`topics` must contain unique items' }));
+            }
+            entities.concat(utopics);
         }
 
-        return Promise.all(tasks).then(() => {
+        entities = _.uniqBy(entities, 'id');
+
+        return Bluebird.map(entities, entity => {
+            return this.entityUseCases.create(entity).catch(DataConflictError, error => debug('trying to add an existing entity'));
+        }).then(() => {
             return super.create(data).then(quizItem => {
                 if (quizItem.topics && quizItem.topics.length) {
-                    return Promise.each(quizItem.topics, topic => {
+                    return Bluebird.each(quizItem.topics, topic => {
                         return this.setTopicCountQuizItems(topic.id);
                     }).then(() => quizItem);
                 }
@@ -43,9 +52,8 @@ export class QuizItemUseCases extends UseCaseSet<QuizItem, IQuizItemRepository> 
         });
     }
 
-    setTopicCountQuizItems(topicId: string): Promise<number> {
-        return this.repository.countByTopicId(topicId).then(count => {
-            return this.entityUseCases.update({ id: topicId, countQuizItems: count }).then(() => count);
-        });
+    setTopicCountQuizItems(topicId: string): Bluebird<number> {
+        return this.repository.countByTopicId(topicId)
+            .then(count => this.entityUseCases.update({ id: topicId, countQuizItems: count }).then(() => count));
     }
 }

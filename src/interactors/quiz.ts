@@ -1,6 +1,6 @@
 
 import { Quiz } from '../entities';
-import { Promise } from '../utils';
+import { Bluebird } from '../utils';
 import { UseCaseSet } from './use-case-set';
 import { WikiEntityUseCases } from './wiki-entity';
 import { IRepository, IQuizRepository } from './repository';
@@ -12,9 +12,9 @@ export class QuizUseCases extends UseCaseSet<Quiz, IQuizRepository> {
         super(rep);
     }
 
-    create(data: Quiz): Promise<Quiz> {
+    create(data: Quiz): Bluebird<Quiz> {
         if (!data) {
-            return Promise.reject(new DataValidationError({ message: 'Invalid data' }));
+            return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
         }
         const tasks = [];
 
@@ -22,10 +22,10 @@ export class QuizUseCases extends UseCaseSet<Quiz, IQuizRepository> {
             data.topics.forEach(topic => tasks.push(this.entityUseCases.create(topic).catch(catchError(DataConflictError))));
         }
 
-        return Promise.all(tasks).then(() => {
+        return Bluebird.all(tasks).then(() => {
             return super.create(data).then(quiz => {
                 if (quiz.topics && quiz.topics.length) {
-                    return Promise.each(quiz.topics, topic => {
+                    return Bluebird.each(quiz.topics, topic => {
                         return this.setTopicCountQuizzes(topic.id);
                     }).then(() => quiz);
                 }
@@ -35,7 +35,7 @@ export class QuizUseCases extends UseCaseSet<Quiz, IQuizRepository> {
         });
     }
 
-    setTopicCountQuizzes(topicId: string): Promise<number> {
+    setTopicCountQuizzes(topicId: string): Bluebird<number> {
         return this.repository.countByTopicId(topicId).then(count => {
             return this.entityUseCases.update({ id: topicId, countQuizzes: count }).then(() => count);
         });

@@ -1,15 +1,18 @@
 
-import { Promise } from '../utils';
+const debug = require('debug')('quizar-domain');
+import { Bluebird } from '../utils';
 
 export * from './errors';
 export * from './convert-error';
 
 export function catchError(type) {
-    return function (error): Promise<void> {
+    const typename = type.name || type.constructor && type.constructor.name;
+    return function (error): Bluebird<void> {
         if (error instanceof type) {
-            return Promise.resolve();
+            debug('catched error of type: ' + typename);
+            return Bluebird.resolve();
         } else {
-            return Promise.reject(error);
+            return Bluebird.reject(error);
         }
     }
 }

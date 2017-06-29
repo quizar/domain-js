@@ -1,6 +1,5 @@
 
 import { PlainObject } from '../utils';
-import { inherits } from 'util';
 
 export interface ErrorDefaultData {
     statusCode?: number
@@ -57,8 +56,6 @@ export class QuizarError extends Error {
         });
     }
 }
-
-inherits(QuizarError, Error);
 
 export class CodeError extends QuizarError {
     constructor(data: ErrorData) {
