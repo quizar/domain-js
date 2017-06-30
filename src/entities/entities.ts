@@ -49,6 +49,7 @@ export type WikiEntity = {
      * Country code (ISO 3166-1 alpha-2 code), upper case
      */
     cc2?: string
+    rank?: number
     countQuizItems?: number
     countQuizzes?: number
 }

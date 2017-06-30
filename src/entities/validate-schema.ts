@@ -55,6 +55,7 @@ const createWikiEntityObj = Joi.object().keys({
     slug: Joi.string().lowercase().trim().min(slugMinLength).max(slugMaxLength),
     name: Joi.string().trim().min(nameMinLength).max(nameMaxLength),
     cc2: Joi.string().regex(countryRegex),
+    rank: Joi.number().integer().min(0),
     countQuizItems: Joi.number().integer().min(0),
     countQuizzes: Joi.number().integer().min(0)
 });

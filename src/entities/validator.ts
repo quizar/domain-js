@@ -5,8 +5,8 @@ import { QuizItem, Quiz, WikiEntity } from '../entities';
 import { createQuizItem, createQuiz, createWikiEntity } from './validate-schema';
 
 export interface IValidator<T> {
-    create(data: T): T
-    update(data: T): T
+    create(data: T, options?: ValidationOptions): T
+    update(data: T, options?: ValidationOptions): T
 }
 
 export class Validator<T> implements IValidator<T> {
