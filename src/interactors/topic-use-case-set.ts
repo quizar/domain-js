@@ -6,11 +6,12 @@ import { UseCaseSet } from './use-case-set';
 import { IRepository, ITopicCountRepository } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
 import { DataValidationError, DataConflictError, catchError } from '../errors';
+import { IValidator } from '../entities/validator';
 
 export class TopicUseCaseSet<T, R extends ITopicCountRepository<T>> extends UseCaseSet<T, R> {
 
-    constructor(rep: R, protected entityUseCases: WikiEntityUseCases, private countName: 'countQuizzes' | 'countQuizItems') {
-        super(rep);
+    constructor(rep: R, validator: IValidator<T>, protected entityUseCases: WikiEntityUseCases, private countName: 'countQuizzes' | 'countQuizItems') {
+        super(rep, validator);
     }
 
     setTopicCount(topicId: string): Bluebird<number> {

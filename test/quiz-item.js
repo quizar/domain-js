@@ -18,13 +18,18 @@ class Repository {
 const quizItemUseCases = new QuizItemUseCases(new Repository(), new WikiEntityUseCases(new Repository()))
 
 describe('QuizItem', function () {
-    const rep = new Repository();
+    // const rep = new Repository();
     describe('Add a QuizItem', function () {
         it('should add a QuizItem', function () {
-            return quizItemUseCases.create({ subject: { id: '1', lang: 'ro', label: 'Moldova', instanceId: 'P12' }, property: { id: 'P12' }, value: { type: 'S', data: 'a' } }, rep);
+            return quizItemUseCases.create({
+                lang: 'ro',
+                entity: { id: 'Q1', lang: 'ro', label: 'Moldova' },
+                propertyId: 'P12',
+                value: { type: 'ENTITY', value: 'Q1', entity: { id: 'Q1', lang: 'ro', label: 'label' } }
+            });
         })
         it('should not add a QuizItem', function () {
-            return quizItemUseCases.create(null, rep).then(() => { assert.fail() }, e => assert.ok(e));
+            return quizItemUseCases.create(null).then(() => { assert.fail() }, e => assert.ok(e));
         })
     })
 })

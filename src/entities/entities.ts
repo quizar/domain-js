@@ -7,6 +7,9 @@ export type PropertyValueType = keyof typeof PropertyValueType
 export const QuizTarget = createEnum(['PVALUE', 'QVALUE'])
 export type QuizTarget = keyof typeof QuizTarget
 
+export const WikiEntityType = createEnum(['PERSON', 'PRODUCT', 'ORG', 'LOCATION', 'EVENT'])
+export type WikiEntityType = keyof typeof WikiEntityType
+
 export type Image = {
     // format: ImageFormat
     data?: string
@@ -30,33 +33,39 @@ export type WikiEntity = {
     id?: string
     lang?: string
     label?: string
+    abbr?: string
     description?: string
     aliases?: string[]
-    props?: IPlainObject<string>
+    props?: IPlainObject<string[]>
+    type?: WikiEntityType
     types?: string[]
     pageTitle?: string
+    pageId?: number
     extract?: string
     // categories?: WikiEntity[]
     slug?: string
+    name?: string
+    /**
+     * Country code (ISO 3166-1 alpha-2 code), upper case
+     */
+    cc2?: string
     countQuizItems?: number
     countQuizzes?: number
-    name?: string
 }
 
 export type QuizItem = {
     id?: string
+    lang?: string
     entity?: WikiEntity
     propertyId?: string
     value?: PropertyValue
     qualifier?: PropertyQualifier
 
-    lang?: string
-
     title?: string
     question?: string
     description?: string
     image?: Image
-    
+
     topics?: WikiEntity[]
 
     createdAt?: number
@@ -78,13 +87,13 @@ export type QuizItemInfo = {
 
 export type Quiz = {
     id?: string
-    target?: QuizTarget
     lang?: string
+    target?: QuizTarget
     title?: string
     question?: string
     description?: string
-    items?: QuizItemInfo[]
     image?: Image
+    items?: QuizItemInfo[]
 
     topics?: WikiEntity[]
 

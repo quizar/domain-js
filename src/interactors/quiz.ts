@@ -5,11 +5,12 @@ import { TopicUseCaseSet } from './topic-use-case-set';
 import { WikiEntityUseCases } from './wiki-entity';
 import { IRepository, IQuizRepository, RepAccessOptions } from './repository';
 import { DataValidationError, DataConflictError, catchError, DataNotFoundError } from '../errors';
+import { QuizValidator } from '../entities/validator';
 
 export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
 
     constructor(rep: IQuizRepository, entityUseCases: WikiEntityUseCases) {
-        super(rep, entityUseCases, 'countQuizzes');
+        super(rep, QuizValidator.instance, entityUseCases, 'countQuizzes');
     }
 
     create(data: Quiz, options?: RepAccessOptions): Bluebird<Quiz> {

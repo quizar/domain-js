@@ -6,11 +6,12 @@ import { TopicUseCaseSet } from './topic-use-case-set';
 import { IRepository, IQuizItemRepository, RepAccessOptions } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
 import { DataValidationError, DataConflictError, catchError } from '../errors';
+import { QuizItemValidator } from '../entities/validator';
 
 export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, IQuizItemRepository> {
 
     constructor(rep: IQuizItemRepository, entityUseCases: WikiEntityUseCases) {
-        super(rep, entityUseCases, 'countQuizItems');
+        super(rep, QuizItemValidator.instance, entityUseCases, 'countQuizItems');
     }
 
     create(data: QuizItem, options?: RepAccessOptions): Bluebird<QuizItem> {
