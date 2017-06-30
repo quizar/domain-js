@@ -39,10 +39,9 @@ const maxPropsCount = 20;
 const maxPropsItemsCount = 5;
 const maxEntityTypesCount = 10;
 
-const createWikiEntityObj = Joi.object().keys({
-    id: Joi.string().regex(entityIdRegex).required(),
-    lang: Joi.string().regex(langRegex).required(),
-    label: Joi.string().trim().min(labelMinLength).max(labelMaxLength).required(),
+// create WikiEntity
+
+const baseWikiEntity = Joi.object().keys({
     abbr: Joi.string().trim().min(abbrMinLength).max(abbrMaxLength),
     description: Joi.string().trim().min(descriptionMinLength).max(descriptionMaxLength),
     aliases: Joi.array().items(Joi.string().trim().min(labelMinLength).max(labelMaxLength)).min(1).max(maxLabelsCount).unique(),
@@ -58,6 +57,22 @@ const createWikiEntityObj = Joi.object().keys({
     rank: Joi.number().integer().min(0),
     countQuizItems: Joi.number().integer().min(0),
     countQuizzes: Joi.number().integer().min(0)
+});
+
+const createWikiEntityObj = baseWikiEntity.keys({
+    id: Joi.string().regex(entityIdRegex).required(),
+    lang: Joi.string().regex(langRegex).required(),
+    label: Joi.string().trim().min(labelMinLength).max(labelMaxLength).required(),
+    createdAt: Joi.number().min(0)
+});
+
+// update WikiEntity
+
+const updateWikiEntityObj = baseWikiEntity.keys({
+    id: Joi.string().regex(entityIdRegex).required(),
+    // lang: Joi.string().regex(langRegex).required(),
+    label: Joi.string().trim().min(labelMinLength).max(labelMaxLength),
+    updatedAt: Joi.number().min(0)
 });
 
 const createImage = Joi.object({

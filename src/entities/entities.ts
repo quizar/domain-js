@@ -52,7 +52,11 @@ export type WikiEntity = {
     rank?: number
     countQuizItems?: number
     countQuizzes?: number
+    createdAt?: number
+    updatedAt?: number
 }
+
+export const WikiEntityProps = ['id', 'lang', 'label', 'abbr', 'description', 'aliases', 'props', 'type', 'types', 'pageTitle', 'pageId', 'extract', 'slug', 'name', 'cc2', 'rank', 'countQuizzes', 'countQuizItems', 'createdAt', 'updatetAt'];
 
 export type QuizItem = {
     id?: string
@@ -72,6 +76,8 @@ export type QuizItem = {
     createdAt?: number
     updatedAt?: number
 }
+
+export const QuizItemProps = ['id', 'lang', 'entity', 'propertyId', 'value', 'qualifier', 'title', 'question', 'description', 'image', 'topics', 'createdAt', 'updatedAt'];
 
 export type QuizItemInfo = {
     order?: number
@@ -101,3 +107,5 @@ export type Quiz = {
     createdAt?: number
     updatedAt?: number
 }
+
+export const QuizProps = ['id', 'lang', 'target', 'title', 'question', 'description', 'image', 'items', 'topics', 'createdAt', 'updatetAt'];
