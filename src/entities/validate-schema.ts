@@ -71,21 +71,20 @@ const createDescriptionSchema = Joi.object().keys({
     image: createImage
 });
 
+const createValueSchema = Joi.object().keys({
+    type: Joi.valid(propertyTypes).required(),
+    value: Joi.string().trim().min(valueMinLength).max(valueMaxValue).when('type', { is: PropertyValueType.ENTITY, then: Joi.string().equal(Joi.ref('entity.id')).required() }).required(),
+    entity: Joi.when('type', { is: PropertyValueType.ENTITY, then: createWikiEntityObj.required() })
+});
+
 const createQuizItemObj = createDescriptionSchema.keys({
     id: Joi.string().trim().min(1).max(40),
     lang: Joi.string().regex(langRegex).required(),
     entity: createWikiEntityObj.required(),
     propertyId: Joi.string().regex(propertyIdRegex).required(),
-    value: Joi.object().keys({
-        type: Joi.valid(propertyTypes).required(),
-        value: Joi.string().trim().min(valueMinLength).max(valueMaxValue).when('type', { is: PropertyValueType.ENTITY, then: Joi.string().regex(entityIdRegex).required() }).required(),
-        entity: Joi.when('type', { is: PropertyValueType.ENTITY, then: createWikiEntityObj.required() })
-    }).required(),
-    qualifier: Joi.object().keys({
-        id: Joi.string().regex(propertyIdRegex).required(),
-        type: Joi.valid(propertyTypes).required(),
-        value: Joi.string().trim().min(valueMinLength).max(valueMaxValue).when('type', { is: PropertyValueType.ENTITY, then: Joi.string().regex(entityIdRegex).required() }).required(),
-        entity: Joi.when('type', { is: PropertyValueType.ENTITY, then: createWikiEntityObj.required() })
+    value: createValueSchema.required(),
+    qualifier: createValueSchema.keys({
+        id: Joi.string().regex(propertyIdRegex).required()
     }),
     topics: Joi.array().items(createWikiEntityObj.required()).min(1).max(maxTopicsCount).unique((a, b) => a.id === b.id)
 });

@@ -25,7 +25,7 @@ describe('QuizItem', function () {
                 lang: 'ro',
                 entity: { id: 'Q1', lang: 'ro', label: 'Moldova' },
                 propertyId: 'P12',
-                value: { type: 'ENTITY', value: 'Q1', entity: { id: 'Q1', lang: 'ro', label: 'label' } }
+                value: { type: 'ENTITY', value: 'Q2', entity: { id: 'Q2', lang: 'ro', label: 'label' } }
             });
         })
         it('should not add a QuizItem', function () {
