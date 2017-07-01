@@ -2,11 +2,12 @@
 import { ValidationOptions, ObjectSchema } from 'joi';
 import { DataValidationError } from '../errors';
 import { QuizItem, Quiz, WikiEntity } from '../entities';
-import { createQuizItem, createQuiz, createWikiEntity } from './validate-schema';
+import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity } from './validate-schema';
+import { RepUpdateData } from '../interactors/repository';
 
 export interface IValidator<T> {
     create(data: T, options?: ValidationOptions): T
-    update(data: T, options?: ValidationOptions): T
+    update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T>
 }
 
 export class Validator<T> implements IValidator<T> {
@@ -19,9 +20,9 @@ export class Validator<T> implements IValidator<T> {
         return this.validate(this.createSchema, data, options);
     }
 
-    update(data: T, options?: ValidationOptions): T {
+    update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T> {
         if (this.updateSchema) {
-            return this.validate(this.updateSchema, data, options);
+            data.update = this.validate(this.updateSchema, data.update, options);
         }
         return data;
     }
@@ -72,7 +73,7 @@ export class QuizValidator extends Validator<Quiz> {
 
 export class WikiEntityValidator extends Validator<WikiEntity> {
     constructor() {
-        super(createWikiEntity);
+        super(createWikiEntity, updateWikiEntity);
     }
 
     private static _instance: WikiEntityValidator;
