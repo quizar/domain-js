@@ -1,6 +1,10 @@
 
 import { IPlainObject, createEnum } from '../utils'
 
+export const ENTITY_NAMES = createEnum(['WikiEntity', 'QuizItem', 'Quiz'])
+export type EntityNameType = ENTITY_NAMES;
+export type ENTITY_NAMES = keyof typeof ENTITY_NAMES
+
 export const PropertyValueType = createEnum(['STRING', 'NUMBER', 'ENTITY'])
 export type PropertyValueType = keyof typeof PropertyValueType
 
@@ -56,8 +60,6 @@ export type WikiEntity = {
     updatedAt?: number
 }
 
-export const WikiEntityProps = ['id', 'lang', 'label', 'abbr', 'description', 'aliases', 'props', 'type', 'types', 'pageTitle', 'pageId', 'extract', 'slug', 'name', 'cc2', 'rank', 'countQuizzes', 'countQuizItems', 'createdAt', 'updatetAt'];
-
 export type QuizItem = {
     id?: string
     lang?: string
@@ -76,8 +78,6 @@ export type QuizItem = {
     createdAt?: number
     updatedAt?: number
 }
-
-export const QuizItemProps = ['id', 'lang', 'entity', 'propertyId', 'value', 'qualifier', 'title', 'question', 'description', 'image', 'topics', 'createdAt', 'updatedAt'];
 
 export type QuizItemInfo = {
     order?: number
@@ -107,5 +107,3 @@ export type Quiz = {
     createdAt?: number
     updatedAt?: number
 }
-
-export const QuizProps = ['id', 'lang', 'target', 'title', 'question', 'description', 'image', 'items', 'topics', 'createdAt', 'updatetAt'];

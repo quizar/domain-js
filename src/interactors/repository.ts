@@ -14,7 +14,7 @@ export interface RepUpdateOptions extends RepAccessOptions {
 }
 
 export interface RepUpdateData<T> {
-    update: T,
+    item: T,
     remove?: string[]
     inc?: IPlainObject<number>
 }

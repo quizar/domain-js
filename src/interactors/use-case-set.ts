@@ -13,7 +13,7 @@ export class UseCaseSet<T, R extends IRepository<T>> {
     }
 
     update(data: T, options?: RepUpdateOptions): Bluebird<T> {
-        return Bluebird.try(() => this.validator.update({ update: data })).then((vdata) => this.repository.update(vdata, options));
+        return Bluebird.try(() => this.validator.update({ item: data })).then((vdata) => this.repository.update(vdata, options));
     }
 
     remove(id: string): Bluebird<boolean> {

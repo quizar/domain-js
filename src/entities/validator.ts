@@ -1,7 +1,8 @@
 
 import { ValidationOptions, ObjectSchema } from 'joi';
-import { DataValidationError } from '../errors';
-import { QuizItem, Quiz, WikiEntity } from '../entities';
+import { DataValidationError, CodeError } from '../errors';
+import { QuizItem, Quiz, WikiEntity, EntityNameType, ENTITY_NAMES } from '../entities';
+import { fieldExists } from './entity-fields';
 import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity } from './validate-schema';
 import { RepUpdateData } from '../interactors/repository';
 
@@ -12,7 +13,7 @@ export interface IValidator<T> {
 
 export class Validator<T> implements IValidator<T> {
 
-    constructor(private createSchema: ObjectSchema, private updateSchema?: ObjectSchema) {
+    constructor(private typeName: EntityNameType, private createSchema: ObjectSchema, private updateSchema?: ObjectSchema) {
 
     }
 
@@ -22,7 +23,15 @@ export class Validator<T> implements IValidator<T> {
 
     update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T> {
         if (this.updateSchema) {
-            data.update = this.validate(this.updateSchema, data.update, options);
+            data.item = this.validate(this.updateSchema, data.item, options);
+        }
+        const fields = [].concat(data.remove || []).concat(data.inc && Object.keys(data.inc) || []);
+        if (fields.length) {
+            for (let i = 0; i < fields.length; i++) {
+                if (!fieldExists(this.typeName, fieldExists[i])) {
+                    throw new CodeError({ message: `Unknown field ${fields[i]} for type ${this.typeName}` });
+                }
+            }
         }
         return data;
     }
@@ -41,7 +50,7 @@ export class Validator<T> implements IValidator<T> {
 
 export class QuizItemValidator extends Validator<QuizItem> {
     constructor() {
-        super(createQuizItem);
+        super(ENTITY_NAMES.QuizItem, createQuizItem);
     }
 
     private static _instance: QuizItemValidator;
@@ -57,7 +66,7 @@ export class QuizItemValidator extends Validator<QuizItem> {
 
 export class QuizValidator extends Validator<Quiz> {
     constructor() {
-        super(createQuiz);
+        super(ENTITY_NAMES.Quiz, createQuiz);
     }
 
     private static _instance: QuizValidator;
@@ -73,7 +82,7 @@ export class QuizValidator extends Validator<Quiz> {
 
 export class WikiEntityValidator extends Validator<WikiEntity> {
     constructor() {
-        super(createWikiEntity, updateWikiEntity);
+        super(ENTITY_NAMES.WikiEntity, createWikiEntity, updateWikiEntity);
     }
 
     private static _instance: WikiEntityValidator;
