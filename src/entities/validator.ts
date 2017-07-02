@@ -2,7 +2,7 @@
 import { ValidationOptions, ObjectSchema } from 'joi';
 import { DataValidationError, CodeError } from '../errors';
 import { QuizItem, Quiz, WikiEntity, EntityNameType, ENTITY_NAMES } from '../entities';
-import { fieldExists } from './entity-fields';
+import { existsTypeField } from './entity-fields';
 import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity } from './validate-schema';
 import { RepUpdateData } from '../interactors/repository';
 
@@ -25,10 +25,10 @@ export class Validator<T> implements IValidator<T> {
         if (this.updateSchema) {
             data.item = this.validate(this.updateSchema, data.item, options);
         }
-        const fields = [].concat(data.remove || []).concat(data.inc && Object.keys(data.inc) || []);
+        const fields = [].concat(data.delete || []);//.concat(data.inc && Object.keys(data.inc) || []);
         if (fields.length) {
             for (let i = 0; i < fields.length; i++) {
-                if (!fieldExists(this.typeName, fieldExists[i])) {
+                if (!existsTypeField(this.typeName, existsTypeField[i])) {
                     throw new CodeError({ message: `Unknown field ${fields[i]} for type ${this.typeName}` });
                 }
             }

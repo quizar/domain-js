@@ -14,10 +14,13 @@ export interface RepUpdateOptions extends RepAccessOptions {
 }
 
 export interface RepUpdateData<T> {
-    item: T,
-    remove?: string[]
-    inc?: IPlainObject<number>
+    item: T
+    delete?: (keyof T)[]
+    // inc?: { [index: string]: number }
 }
+
+// const obj: RepUpdateData<WikiEntity> = { item: {} };
+// obj.delete=['id'];
 
 export interface IRepository<T> {
     create(data: T, options?: RepAccessOptions): Bluebird<T>

@@ -72,12 +72,12 @@ export class DataConflictError extends DataError {
 }
 
 export class DataValidationError extends DataError {
-    constructor(data: ErrorData) {
-        super(data, { message: 'Validation error', statusCode: 400 });
+    constructor(data: ErrorData, defaults?: ErrorDefaultData) {
+        super(data, Object.assign({ message: 'Validation error', statusCode: 400 }, defaults));
     }
 }
 
-export class DataNotFoundError extends DataError {
+export class DataNotFoundError extends DataValidationError {
     constructor(data: ErrorData) {
         super(data, { message: 'Data not found', statusCode: 404 });
     }
