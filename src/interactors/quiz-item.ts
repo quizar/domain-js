@@ -24,8 +24,8 @@ export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, IQuizItemReposit
             entities.push(data.entity);
         }
 
-        if (data.value && data.value.entity) {
-            entities.push(data.value.entity);
+        if (data.property && data.property.entity) {
+            entities.push(data.property.entity);
         }
 
         if (data.qualifier && data.qualifier.entity) {

@@ -41,6 +41,8 @@ export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
             if (!quiz) {
                 return Bluebird.reject(new DataNotFoundError({ message: `Not found quiz id=${quizId}` }));
             }
+            quiz.items = quiz.items || [];
+            
             const qii = _.findIndex(quiz.items, item => item.item.id === data.item.id);
             if (qii > -1) {
                 return Bluebird.reject(new DataConflictError({ message: `Quiz id=${quizId} has an item with id=${data.item.id}` }));
@@ -57,6 +59,8 @@ export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
             if (!quiz) {
                 return Bluebird.reject(new DataNotFoundError({ message: `Not found quiz id=${quizId}` }));
             }
+            quiz.items = quiz.items || [];
+
             const qii = _.findIndex(quiz.items, item => item.item.id === quizItemId);
             if (qii < 0) {
                 return Bluebird.reject(new DataNotFoundError({ message: `Quiz id=${quizId} has not an item with id=${quizItemId}` }));

@@ -4,7 +4,7 @@ import { createEnum } from '../utils';
 
 export const WikiEntityFields = createEnum(['id', 'lang', 'label', 'abbr', 'description', 'aliases', 'props', 'type', 'types', 'pageTitle', 'pageId', 'extract', 'slug', 'name', 'cc2', 'rank', 'countQuizzes', 'countQuizItems', 'createdAt', 'updatedAt'])
 export type WikiEntityFields = keyof typeof WikiEntityFields;
-export const QuizItemFields = createEnum(['id', 'lang', 'entity', 'propertyId', 'value', 'qualifier', 'title', 'question', 'description', 'image', 'topics', 'createdAt', 'updatedAt'])
+export const QuizItemFields = createEnum(['id', 'lang', 'entity', 'property', 'qualifier', 'title', 'question', 'description', 'image', 'topics', 'createdAt', 'updatedAt'])
 export type QuizItemFields = keyof typeof QuizItemFields;
 export const QuizFields = createEnum(['id', 'lang', 'target', 'title', 'question', 'description', 'image', 'items', 'topics', 'createdAt', 'updatetAt'])
 export type QuizFields = keyof typeof QuizFields;
