@@ -1,5 +1,6 @@
 
 const objectMapper = require('object-mapper');
+const cleanDeep = require('clean-deep');
 import { IPlainObject } from '../utils';
 
 export interface IEntityMapper<DE, E> {
@@ -24,17 +25,24 @@ export class EntityMapper<DE, E> implements IEntityMapper<DE, E> {
         return EntityMapper.fromDomainEntity<E, DE>(data, this.fromEntityMap);
     }
     toDomainEntity(data: E): DE {
+        // console.log('toDomainEntity data', JSON.stringify(data))
         return EntityMapper.toDomainEntity<DE, E>(data, this.toEntityMap);
+        // console.log('toDomainEntity r', JSON.stringify(r))
+        // return r;
     }
 
-    static cleanObject<ST>(obj: ST, ingore: [any] = [null]): ST {
-        for (var prop in obj) {
-            if (~ingore.indexOf(obj[prop])) {
-                delete obj[prop];
-            }
-        }
+    static cleanObject(obj: any, ignore: [any] = [null]) {
+        return cleanDeep(obj, { emptyArrays: false });
+        // for (var prop in obj) {
+        //     if (Array.isArray(obj[prop])) {
+        //         obj[prop] = (obj[prop]).filter(item => ignore.indexOf(item) < 0).map(item => EntityMapper.cleanObject(item));
+        //     }
+        //     if (~ignore.indexOf(obj[prop]) || Array.isArray(obj[prop]) && !obj[prop]['length'] || typeof obj[prop] === 'object' && !Object.keys(obj[prop]).length) {
+        //         delete obj[prop];
+        //     }
+        // }
 
-        return obj;
+        // return obj;
     }
 
     static fromDomainEntity<SE, SDE>(data: SDE, mapInfo: ObjectMapperInfo): SE {

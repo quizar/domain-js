@@ -3,7 +3,7 @@ import { ValidationOptions, ObjectSchema } from 'joi';
 import { DataValidationError, CodeError } from '../errors';
 import { QuizItem, Quiz, WikiEntity, EntityNameType, ENTITY_NAMES } from '../entities';
 import { existsTypeField } from './entity-fields';
-import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity } from './validate-schema';
+import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity, updateQuiz } from './validate-schema';
 import { RepUpdateData } from '../interactors/repository';
 
 export interface IValidator<T> {
@@ -66,7 +66,7 @@ export class QuizItemValidator extends Validator<QuizItem> {
 
 export class QuizValidator extends Validator<Quiz> {
     constructor() {
-        super(ENTITY_NAMES.Quiz, createQuiz);
+        super(ENTITY_NAMES.Quiz, createQuiz, updateQuiz);
     }
 
     private static _instance: QuizValidator;

@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.0",
+    "clean-deep": "^3.0.0",
     "joi": "^10.6.0",
     "lodash": "^4.17.4",
     "object-mapper": "^3.0.1"

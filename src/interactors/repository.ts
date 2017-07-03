@@ -6,7 +6,7 @@ export interface RepAccessOptions {
     /**
      * Fields to return separated by spaces
      */
-    fieldsToGet?: string
+    fields?: string
 }
 
 export interface RepUpdateOptions extends RepAccessOptions {
@@ -27,6 +27,7 @@ export interface IRepository<T> {
     update(data: RepUpdateData<T>, options?: RepUpdateOptions): Bluebird<T>
     remove(id: string): Bluebird<boolean>
     getById(id: string, options?: RepAccessOptions): Bluebird<T>
+    exists(id: string): Bluebird<boolean>
 }
 
 export interface ITopicCountRepository<T> extends IRepository<T> {

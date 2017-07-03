@@ -100,22 +100,35 @@ const createQuizItemObj = createDescriptionSchema.keys({
     entity: createWikiEntityObj.required(),
     property: createWikiPropertySchema.required(),
     qualifier: createWikiPropertySchema,
-    topics: Joi.array().items(createWikiEntityObj.required()).min(1).max(maxTopicsCount).unique((a, b) => a.id === b.id)
+    topics: Joi.array().min(1).items(createWikiEntityObj.required()).max(maxTopicsCount).unique((a, b) => a.id === b.id)
 });
 
 const createQuizObj = createDescriptionSchema.keys({
     id: Joi.string().trim().min(1).max(40),
     lang: Joi.string().regex(langRegex).required(),
     target: Joi.valid(quizTargets).required(),
-    topics: Joi.array().items(createWikiEntityObj.required()).min(1).max(maxTopicsCount).unique((a, b) => a.id === b.id),
+    topics: Joi.array().items(createWikiEntityObj.min(1).required()).max(maxTopicsCount).unique((a, b) => a.id === b.id),
     items: Joi.array().items(createDescriptionSchema.keys({
         order: Joi.number().integer().min(1).max(maxQuizItemsCount),
         target: Joi.valid(quizTargets),
         item: Joi.object().keys({ id: Joi.string().trim().required() }).required()
-    })).min(1).max(maxQuizItemsCount).unique((a, b) => a.item.id === b.item.id)
+    }).min(1)).max(maxQuizItemsCount).unique((a, b) => a.item.id === b.item.id)
+});
+
+const updateQuizObj = createDescriptionSchema.keys({
+    id: Joi.string().trim().min(1).max(40).required(),
+    // lang: Joi.string().regex(langRegex).required(),
+    target: Joi.valid(quizTargets),
+    topics: Joi.array().items(createWikiEntityObj.min(1).required()).max(maxTopicsCount).unique((a, b) => a.id === b.id),
+    items: Joi.array().items(createDescriptionSchema.keys({
+        order: Joi.number().integer().min(1).max(maxQuizItemsCount),
+        target: Joi.valid(quizTargets),
+        item: Joi.object().keys({ id: Joi.string().trim().required() }).required()
+    }).min(1)).max(maxQuizItemsCount).unique((a, b) => a.item.id === b.item.id)
 });
 
 export const createWikiEntity = createWikiEntityObj.required();
 export const createQuizItem = createQuizItemObj.required();
 export const createQuiz = createQuizObj.required();
 export const updateWikiEntity = updateWikiEntityObj.required();
+export const updateQuiz = updateQuizObj.required();
