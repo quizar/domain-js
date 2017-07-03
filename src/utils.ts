@@ -2,6 +2,8 @@
 import * as Bluebird from 'bluebird';
 import * as _ from 'lodash';
 import { createHash } from 'crypto';
+const slugFn = require('mollusc');
+const atonicObj = require('atonic');
 
 export { Bluebird, _ }
 
@@ -25,4 +27,8 @@ export function isEntityId(id: string) {
 
 export function md5(data: string): string {
   return createHash('MD5').update(data, 'utf8').digest('hex');
+}
+
+export function slug(str: string): string {
+  return slugFn(atonicObj.lowerCase(str.toLowerCase()));
 }

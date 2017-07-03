@@ -14,7 +14,7 @@ export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, IQuizItemReposit
         super(rep, QuizItemValidator.instance, entityUseCases, 'countQuizItems');
     }
 
-    static createId(data: QuizItem): string {
+    createId(data: QuizItem): string {
         try {
             return md5([data.entity.id.trim().toUpperCase(), data.property.id.trim().toUpperCase()].join('|'));
         } catch (e) {
@@ -27,7 +27,7 @@ export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, IQuizItemReposit
             return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
         }
         try {
-            data.id = QuizItemUseCases.createId(data);
+            data.id = this.createId(data);
         } catch (e) {
             return Bluebird.reject(e);
         }

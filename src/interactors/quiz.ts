@@ -1,7 +1,7 @@
 
 const debug = require('debug')('quizar-domain');
 import { Quiz, QuizItemInfo } from '../entities';
-import { Bluebird, _ } from '../utils';
+import { Bluebird, _, md5, slug } from '../utils';
 import { TopicUseCaseSet } from './topic-use-case-set';
 import { WikiEntityUseCases } from './wiki-entity';
 import { IRepository, IQuizRepository, RepAccessOptions, IQuizItemRepository, RepUpdateOptions } from './repository';
@@ -14,10 +14,25 @@ export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
         super(rep, QuizValidator.instance, entityUseCases, 'countQuizzes');
     }
 
+    createId(data: Quiz): string {
+        try {
+            return slug(data.id || data.title.trim()).substr(0, 32).replace(/[^\w\d]+$/, '');
+        } catch (e) {
+            throw new DataValidationError({ error: e, message: 'title is required' });
+        }
+    }
+
     create(data: Quiz, options?: RepAccessOptions): Bluebird<Quiz> {
         if (!data) {
             return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
         }
+
+        try {
+            data.id = this.createId(data);
+        } catch (e) {
+            return Bluebird.reject(e);
+        }
+
         const tasks = [];
 
         if (data.topics && data.topics.length) {

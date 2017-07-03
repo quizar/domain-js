@@ -104,6 +104,7 @@ const createQuizItemObj = createDescriptionSchema.keys({
 });
 
 const createQuizObj = createDescriptionSchema.keys({
+    title: Joi.string().trim().min(titleMinLength).max(titleMaxlength).required(),
     id: Joi.string().trim().min(1).max(40),
     lang: Joi.string().regex(langRegex).required(),
     target: Joi.valid(quizTargets).required(),
