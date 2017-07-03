@@ -6,18 +6,20 @@ import { IPlainObject } from '../utils';
 export interface IEntityMapper<DE, E> {
     fromDomainEntity(data: DE): E
     toDomainEntity(data: E): DE
+    fromDomainEntityField(fieldName: string): string
+    toDomainEntityField(fieldName: string): string
 }
 
 export type ObjectMapperInfo = IPlainObject<string | string[]>;
 
 export class EntityMapper<DE, E> implements IEntityMapper<DE, E> {
+    constructor(private fromEntityMap: ObjectMapperInfo, private toEntityMap: ObjectMapperInfo) { }
 
-    private fromEntityMap: ObjectMapperInfo;
-    private toEntityMap: ObjectMapperInfo;
-
-    constructor(fromEntityMap: ObjectMapperInfo, toEntityMap: ObjectMapperInfo) {
-        this.fromEntityMap = fromEntityMap;
-        this.toEntityMap = toEntityMap;
+    fromDomainEntityField(fieldName: string): string {
+        return Array.isArray(this.fromEntityMap[fieldName]) ? (<Array<string>>this.fromEntityMap[fieldName])[0] : <string>this.fromEntityMap[fieldName];
+    }
+    toDomainEntityField(fieldName: string): string {
+        return Array.isArray(this.toEntityMap[fieldName]) ? (<Array<string>>this.toEntityMap[fieldName])[0] : <string>this.toEntityMap[fieldName];
     }
 
     fromDomainEntity(data: DE): E {

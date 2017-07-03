@@ -1,7 +1,7 @@
 
 const debug = require('debug')('quizar-domain');
 import { QuizItem, WikiEntity } from '../entities';
-import { Bluebird, _ } from '../utils';
+import { Bluebird, _, md5 } from '../utils';
 import { TopicUseCaseSet } from './topic-use-case-set';
 import { IRepository, IQuizItemRepository, RepAccessOptions } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
@@ -14,17 +14,29 @@ export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, IQuizItemReposit
         super(rep, QuizItemValidator.instance, entityUseCases, 'countQuizItems');
     }
 
+    static createId(data: QuizItem): string {
+        try {
+            return md5([data.entity.id.trim().toUpperCase(), data.property.id.trim().toUpperCase()].join('|'));
+        } catch (e) {
+            throw new DataValidationError({ error: e, message: 'entity and property are required' });
+        }
+    }
+
     create(data: QuizItem, options?: RepAccessOptions): Bluebird<QuizItem> {
-        if (!data) {
+        if (!data || !data.property || !data.entity) {
             return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
         }
-        let entities: WikiEntity[] = [];
-
-        if (data.entity) {
-            entities.push(data.entity);
+        try {
+            data.id = QuizItemUseCases.createId(data);
+        } catch (e) {
+            return Bluebird.reject(e);
         }
 
-        if (data.property && data.property.entity) {
+        let entities: WikiEntity[] = [];
+
+        entities.push(data.entity);
+
+        if (data.property.entity) {
             entities.push(data.property.entity);
         }
 

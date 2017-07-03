@@ -4,7 +4,7 @@ import { DataValidationError, CodeError } from '../errors';
 import { QuizItem, Quiz, WikiEntity, EntityNameType, ENTITY_NAMES } from '../entities';
 import { existsTypeField } from './entity-fields';
 import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity, updateQuiz } from './validate-schema';
-import { RepUpdateData } from '../interactors/repository';
+import { RepUpdateData, RepAccessOptions, RepUpdateOptions } from '../interactors/repository';
 
 export interface IValidator<T> {
     create(data: T, options?: ValidationOptions): T

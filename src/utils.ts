@@ -1,6 +1,7 @@
 
 import * as Bluebird from 'bluebird';
 import * as _ from 'lodash';
+import { createHash } from 'crypto';
 
 export { Bluebird, _ }
 
@@ -20,4 +21,8 @@ export function createEnum<T extends string>(o: Array<T>): {[K in T]: K} {
 
 export function isEntityId(id: string) {
   return /^Q\d+$/.test(id);
+}
+
+export function md5(data: string): string {
+  return createHash('MD5').update(data, 'utf8').digest('hex');
 }
