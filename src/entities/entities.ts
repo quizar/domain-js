@@ -20,11 +20,23 @@ export type Image = {
     propertyId?: string
 }
 
-export type WikiProperty = {
+export type EntityPropertyQualifier = {
     id: string
-    type?: PropertyValueType
-    value?: string
+    type: PropertyValueType
+    value: string
     entity?: WikiEntity
+}
+
+export type EntityPropertyValue = {
+    value: string
+    entity?: WikiEntity
+    qualifiers?: EntityPropertyQualifier[]
+}
+
+export type EntityProperty = {
+    id: string
+    type: PropertyValueType
+    values: EntityPropertyValue[]
 }
 
 export type WikiEntity = {
@@ -58,8 +70,7 @@ export type QuizItem = {
     id?: string
     lang?: string
     entity?: WikiEntity
-    property?: WikiProperty
-    qualifier?: WikiProperty
+    property?: EntityProperty
 
     title?: string
     question?: string

@@ -1,6 +1,6 @@
 
 const debug = require('debug')('quizar-domain');
-import { Quiz, QuizItemInfo } from '../entities';
+import { Quiz, QuizItemInfo, QuizFields } from '../entities';
 import { Bluebird, _, md5, slug } from '../utils';
 import { TopicUseCaseSet } from './topic-use-case-set';
 import { WikiEntityUseCases } from './wiki-entity';
@@ -33,29 +33,54 @@ export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
             return Bluebird.reject(e);
         }
 
-        const tasks = [];
-
-        if (data.topics && data.topics.length) {
-            data.topics.forEach(topic => tasks.push(this.entityUseCases.create(topic).catch(DataConflictError, error => { })));
-        }
-
-        return Bluebird.all(tasks).then(() => {
-            return this.notExistsQuizItems(data.items && data.items.map(item => item.item.id) || [])
+        return this.prepareTopics(data.topics)
+            .map(entity => this.entityUseCases.create(entity).catch(DataConflictError, error => debug('trying to add an existing entity')))
+            .return(this.notExistsQuizItems(data.items && data.items.map(item => item.item.id) || [])
                 .then(notExists => {
                     if (notExists.length) {
                         return Bluebird.reject(new DataNotFoundError({ message: `Not found QuizItem id in ${notExists}` }));
                     }
                     return super.create(data, options).then(quiz => {
                         if (quiz.topics && quiz.topics.length) {
-                            return Bluebird.each(quiz.topics, topic => {
-                                return this.setTopicCount(topic.id);
-                            }).then(() => quiz);
+                            return Bluebird.map(quiz.topics, topic => this.setTopicCount(topic.id)).return(quiz);
                         }
 
                         return quiz;
                     });
-                });
-        });
+                }));
+    }
+
+    update(data: Quiz, options?: RepUpdateOptions) {
+        return Bluebird.resolve(Array.isArray(data.topics))
+            .then(setTopics => {
+                if (setTopics) {
+                    return this.getById(data.id, { fields: [QuizFields.id, QuizFields.topics] })
+                        .then(quiz => {
+                            if (!quiz) {
+                                return Bluebird.reject(new DataNotFoundError({ message: `Not found quiz id=${data.id}` }));
+                            }
+                            return _.differenceBy(quiz.topics || [], data.topics, 'id');
+                        })
+                        .then(deletedTopics => data.topics.concat(deletedTopics));
+                }
+            })
+            .then(updatedTopics => this.prepareTopics(data.topics)
+                .map(entity => this.entityUseCases.create(entity).catch(DataConflictError, error => debug('trying to add an existing entity')))
+                .return(this.notExistsQuizItems(data.items && data.items.map(item => item.item.id) || [])
+                    .then(notExists => {
+                        if (notExists.length) {
+                            return Bluebird.reject(new DataNotFoundError({ message: `Not found QuizItem id in ${notExists}` }));
+                        }
+                        return super.update(data, options)
+                            .then(quiz => {
+                                if (updatedTopics && updatedTopics.length) {
+                                    return Bluebird.map(updatedTopics, topic => this.setTopicCount(topic.id)).return(quiz);
+                                }
+
+                                return quiz;
+                            });
+                    }))
+            );
     }
 
     addQuizItemInfo(quizId: string, data: QuizItemInfo): Bluebird<QuizItemInfo> {
@@ -95,16 +120,6 @@ export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
 
             return this.update({ id: quizId, items: quiz.items }).then(() => true);
         });
-    }
-
-    update(data: Quiz, options?: RepUpdateOptions) {
-        return this.notExistsQuizItems(data.items && data.items.map(item => item.item.id) || [])
-            .then(notExists => {
-                if (notExists.length) {
-                    return Bluebird.reject(new DataNotFoundError({ message: `Not found QuizItem id in ${notExists}` }));
-                }
-                return super.update(data, options);
-            });
     }
 
     private notExistsQuizItems(items: string[]): Bluebird<string[]> {

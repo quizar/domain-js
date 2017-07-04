@@ -6,7 +6,7 @@ export interface RepAccessOptions {
     /**
      * Fields to return separated by spaces
      */
-    fields?: string
+    fields?: string[]
 }
 
 export interface RepUpdateOptions extends RepAccessOptions {

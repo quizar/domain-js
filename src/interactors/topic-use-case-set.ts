@@ -23,7 +23,10 @@ export class TopicUseCaseSet<T, R extends ITopicCountRepository<T>> extends UseC
             });
     }
 
-    prepareTopics(topics: WikiEntity[]) {
+    prepareTopics(topics: WikiEntity[]): Bluebird<WikiEntity[]> {
+        if (!topics || !topics.length) {
+            return Bluebird.resolve([]);
+        }
         const utopics = _.uniqBy(topics, 'id');
         if (utopics.length !== topics.length) {
             return Bluebird.reject(new DataValidationError({ message: '`topics` must contain unique items' }));

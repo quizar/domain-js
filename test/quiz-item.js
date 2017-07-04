@@ -24,7 +24,7 @@ describe('QuizItem', function () {
             return quizItemUseCases.create({
                 lang: 'ro',
                 entity: { id: 'Q1', lang: 'ro', label: 'Moldova' },
-                property: { id: 'P12', type: 'ENTITY', value: 'Q2', entity: { id: 'Q2', lang: 'ro', label: 'label' } }
+                property: { id: 'P12', type: 'ENTITY', values: [{ value: 'Q2', entity: { id: 'Q2', lang: 'ro', label: 'label' } }] }
             });
         })
         it('should not add a QuizItem', function () {
