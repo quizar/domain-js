@@ -27,7 +27,7 @@ export class CreateQuiz extends CreateUseCase<Quiz>{
         }
     }
 
-    innerExecute(data: Quiz, options?: RepAccessOptions): Bluebird<Quiz> {
+    protected innerExecute(data: Quiz, options?: RepAccessOptions): Bluebird<Quiz> {
         return prepareTopics(data.topics)
             .map(entity => this.createEntity.execute(entity).catch(DataConflictError, error => debug('trying to add an existing entity')))
             .return(notExistsQuizItems(this.quizItemRepository, data.items && data.items.map(item => item.item.id) || [])

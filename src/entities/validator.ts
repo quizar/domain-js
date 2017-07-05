@@ -18,12 +18,12 @@ export class BaseValidator<T> implements Validator<T> {
     }
 
     create(data: T, options?: ValidationOptions): T {
-        return this.validate(this.createSchema, data, options);
+        return validate(this.createSchema, data, options);
     }
 
     update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T> {
         if (this.updateSchema) {
-            data.item = this.validate(this.updateSchema, data.item, options);
+            data.item = validate(this.updateSchema, data.item, options);
         }
         const fields = [].concat(data.delete || []);//.concat(data.inc && Object.keys(data.inc) || []);
         if (fields.length) {
@@ -35,17 +35,17 @@ export class BaseValidator<T> implements Validator<T> {
         }
         return data;
     }
+}
 
-    private validate(schema: ObjectSchema, data: T, options?: ValidationOptions): T {
-        options = options || { abortEarly: true, convert: true, allowUnknown: false, stripUnknown: false };
+export function validate<T>(schema: ObjectSchema, data: T, options?: ValidationOptions): T {
+    options = options || { abortEarly: true, convert: true, allowUnknown: false, stripUnknown: false };
 
-        const result = schema.validate(data, options);
-        if (result.error) {
-            throw new DataValidationError({ error: result.error });
-        }
-
-        return result.value;
+    const result = schema.validate(data, options);
+    if (result.error) {
+        throw new DataValidationError({ error: result.error });
     }
+
+    return result.value;
 }
 
 export class QuizItemValidator extends BaseValidator<QuizItem> {

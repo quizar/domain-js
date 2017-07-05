@@ -27,7 +27,7 @@ export class CreateQuizItem extends CreateUseCase<QuizItem>{
         }
     }
 
-    innerExecute(data: QuizItem, options?: RepAccessOptions): Bluebird<QuizItem> {
+    protected innerExecute(data: QuizItem, options?: RepAccessOptions): Bluebird<QuizItem> {
         return Bluebird.resolve(formatPropertyEntities(data))
             .then(entities => entities.concat([data.entity]))
             .then(entities => prepareTopics(data.topics).then(topics => entities.concat(topics)))

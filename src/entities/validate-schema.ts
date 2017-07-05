@@ -115,17 +115,19 @@ const createQuizItemObj = createDescriptionSchema.keys({
     topics: Joi.array().min(1).items(createWikiEntityObj.required()).max(maxTopicsCount).unique((a, b) => a.id === b.id)
 });
 
+const createQuizItemInfoObj = createDescriptionSchema.keys({
+    order: Joi.number().integer().min(1).max(maxQuizItemsCount),
+    target: Joi.valid(quizTargets),
+    item: Joi.object().keys({ id: Joi.string().trim().required() }).required()
+});
+
 const createQuizObj = createDescriptionSchema.keys({
     title: Joi.string().trim().min(titleMinLength).max(titleMaxlength).required(),
     id: Joi.string().trim().min(1).max(40),
     lang: Joi.string().regex(langRegex).required(),
     target: Joi.valid(quizTargets).required(),
-    topics: Joi.array().items(createWikiEntityObj.min(1).required()).max(maxTopicsCount).unique((a, b) => a.id === b.id),
-    items: Joi.array().items(createDescriptionSchema.keys({
-        order: Joi.number().integer().min(1).max(maxQuizItemsCount),
-        target: Joi.valid(quizTargets),
-        item: Joi.object().keys({ id: Joi.string().trim().required() }).required()
-    }).min(1)).max(maxQuizItemsCount).unique((a, b) => a.item.id === b.item.id)
+    topics: Joi.array().items(createWikiEntityObj.required()).max(maxTopicsCount).unique((a, b) => a.id === b.id),
+    items: Joi.array().items(createQuizItemInfoObj.required()).max(maxQuizItemsCount).unique((a, b) => a.item.id === b.item.id)
 });
 
 const updateQuizObj = createDescriptionSchema.keys({
@@ -143,5 +145,6 @@ const updateQuizObj = createDescriptionSchema.keys({
 export const createWikiEntity = createWikiEntityObj.required();
 export const createQuizItem = createQuizItemObj.required();
 export const createQuiz = createQuizObj.required();
+export const createQuizItemInfo = createQuizItemInfoObj.required();
 export const updateWikiEntity = updateWikiEntityObj.required();
 export const updateQuiz = updateQuizObj.required();

@@ -20,7 +20,7 @@ export class UpdateQuiz extends UpdateUseCase<Quiz>{
         this.setTopicCount = new SetTopicCount<Quiz>(updateEntity, repository, 'countQuizzes');
     }
 
-    innerExecute(data: RepUpdateData<Quiz>, options?: RepUpdateOptions): Bluebird<Quiz> {
+    protected innerExecute(data: RepUpdateData<Quiz>, options?: RepUpdateOptions): Bluebird<Quiz> {
         const itemData = data.item;
 
         return Bluebird.resolve(Array.isArray(itemData.topics))
