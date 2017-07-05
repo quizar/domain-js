@@ -22,25 +22,28 @@ export interface RepUpdateData<T> {
 // const obj: RepUpdateData<WikiEntity> = { item: {} };
 // obj.delete=['id'];
 
-export interface IRepository<T> {
-    create(data: T, options?: RepAccessOptions): Bluebird<T>
-    update(data: RepUpdateData<T>, options?: RepUpdateOptions): Bluebird<T>
+export interface RootRepository {
     remove(id: string): Bluebird<boolean>
-    getById(id: string, options?: RepAccessOptions): Bluebird<T>
     exists(id: string): Bluebird<boolean>
 }
 
-export interface ITopicCountRepository<T> extends IRepository<T> {
+export interface Repository<T> extends RootRepository {
+    create(data: T, options?: RepAccessOptions): Bluebird<T>
+    update(data: RepUpdateData<T>, options?: RepUpdateOptions): Bluebird<T>
+    getById(id: string, options?: RepAccessOptions): Bluebird<T>
+}
+
+export interface TopicCountRepository<T> extends Repository<T> {
     countByTopicId(topicId: string): Bluebird<number>
 }
 
-export interface IQuizItemRepository extends ITopicCountRepository<QuizItem> {
+export interface QuizItemRepository extends TopicCountRepository<QuizItem> {
 }
 
-export interface IWikiEntityRepository extends IRepository<WikiEntity> {
+export interface WikiEntityRepository extends Repository<WikiEntity> {
 
 }
 
-export interface IQuizRepository extends ITopicCountRepository<Quiz> {
+export interface QuizRepository extends TopicCountRepository<Quiz> {
 
 }

@@ -4,13 +4,13 @@ import { Quiz, QuizItemInfo, QuizFields } from '../entities';
 import { Bluebird, _, md5, slug } from '../utils';
 import { TopicUseCaseSet } from './topic-use-case-set';
 import { WikiEntityUseCases } from './wiki-entity';
-import { IRepository, IQuizRepository, RepAccessOptions, IQuizItemRepository, RepUpdateOptions } from './repository';
+import { Repository, QuizRepository, RepAccessOptions, QuizItemRepository, RepUpdateOptions } from './repository';
 import { DataValidationError, DataConflictError, catchError, DataNotFoundError } from '../errors';
 import { QuizValidator } from '../entities/validator';
 
-export class QuizUseCases extends TopicUseCaseSet<Quiz, IQuizRepository> {
+export class QuizUseCases extends TopicUseCaseSet<Quiz, QuizRepository> {
 
-    constructor(rep: IQuizRepository, entityUseCases: WikiEntityUseCases, private quizItemRep: IQuizItemRepository) {
+    constructor(rep: QuizRepository, entityUseCases: WikiEntityUseCases, private quizItemRep: QuizItemRepository) {
         super(rep, QuizValidator.instance, entityUseCases, 'countQuizzes');
     }
 

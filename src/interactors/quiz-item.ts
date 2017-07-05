@@ -3,14 +3,14 @@ const debug = require('debug')('quizar-domain');
 import { QuizItem, WikiEntity, QuizItemFields } from '../entities';
 import { Bluebird, _, md5 } from '../utils';
 import { TopicUseCaseSet } from './topic-use-case-set';
-import { IRepository, IQuizItemRepository, RepAccessOptions, RepUpdateOptions } from './repository';
+import { Repository, QuizItemRepository, RepAccessOptions, RepUpdateOptions } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
 import { DataValidationError, DataConflictError, catchError, DataNotFoundError } from '../errors';
 import { QuizItemValidator } from '../entities/validator';
 
-export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, IQuizItemRepository> {
+export class QuizItemUseCases extends TopicUseCaseSet<QuizItem, QuizItemRepository> {
 
-    constructor(rep: IQuizItemRepository, entityUseCases: WikiEntityUseCases) {
+    constructor(rep: QuizItemRepository, entityUseCases: WikiEntityUseCases) {
         super(rep, QuizItemValidator.instance, entityUseCases, 'countQuizItems');
     }
 

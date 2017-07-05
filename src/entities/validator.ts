@@ -6,12 +6,12 @@ import { existsTypeField } from './entity-fields';
 import { createQuizItem, createQuiz, createWikiEntity, updateWikiEntity, updateQuiz } from './validate-schema';
 import { RepUpdateData, RepAccessOptions, RepUpdateOptions } from '../interactors/repository';
 
-export interface IValidator<T> {
+export interface Validator<T> {
     create(data: T, options?: ValidationOptions): T
     update(data: RepUpdateData<T>, options?: ValidationOptions): RepUpdateData<T>
 }
 
-export class Validator<T> implements IValidator<T> {
+export class BaseValidator<T> implements Validator<T> {
 
     constructor(private typeName: EntityNameType, private createSchema: ObjectSchema, private updateSchema?: ObjectSchema) {
 
@@ -48,7 +48,7 @@ export class Validator<T> implements IValidator<T> {
     }
 }
 
-export class QuizItemValidator extends Validator<QuizItem> {
+export class QuizItemValidator extends BaseValidator<QuizItem> {
     constructor() {
         super(ENTITY_NAMES.QuizItem, createQuizItem);
     }
@@ -64,7 +64,7 @@ export class QuizItemValidator extends Validator<QuizItem> {
     }
 }
 
-export class QuizValidator extends Validator<Quiz> {
+export class QuizValidator extends BaseValidator<Quiz> {
     constructor() {
         super(ENTITY_NAMES.Quiz, createQuiz, updateQuiz);
     }
@@ -80,7 +80,7 @@ export class QuizValidator extends Validator<Quiz> {
     }
 }
 
-export class WikiEntityValidator extends Validator<WikiEntity> {
+export class WikiEntityValidator extends BaseValidator<WikiEntity> {
     constructor() {
         super(ENTITY_NAMES.WikiEntity, createWikiEntity, updateWikiEntity);
     }

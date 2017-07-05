@@ -3,14 +3,14 @@ const debug = require('debug')('quizar-domain');
 import { QuizItem, WikiEntity } from '../entities';
 import { Bluebird, _ } from '../utils';
 import { UseCaseSet } from './use-case-set';
-import { IRepository, ITopicCountRepository } from './repository';
+import { Repository, TopicCountRepository } from './repository';
 import { WikiEntityUseCases } from './wiki-entity';
 import { DataValidationError, DataConflictError, catchError } from '../errors';
-import { IValidator } from '../entities/validator';
+import { BaseValidator } from '../entities/validator';
 
-export class TopicUseCaseSet<T, R extends ITopicCountRepository<T>> extends UseCaseSet<T, R> {
+export class TopicUseCaseSet<T, R extends TopicCountRepository<T>> extends UseCaseSet<T, R> {
 
-    constructor(rep: R, validator: IValidator<T>, protected entityUseCases: WikiEntityUseCases, private countName: 'countQuizzes' | 'countQuizItems') {
+    constructor(rep: R, validator: BaseValidator<T>, protected entityUseCases: WikiEntityUseCases, private countName: 'countQuizzes' | 'countQuizItems') {
         super(rep, validator);
     }
 

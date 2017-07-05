@@ -1,5 +1,5 @@
 
-const { QuizItemUseCases, WikiEntityUseCases, QuizItem } = require('../lib')
+const { CreateQuizItem, CreateEntity, UpdateEntity } = require('../lib')
 const assert = require('assert')
 const Bluebird = require('bluebird')
 
@@ -15,20 +15,21 @@ class Repository {
     }
 }
 
-const quizItemUseCases = new QuizItemUseCases(new Repository(), new WikiEntityUseCases(new Repository()))
+const createEntity = new CreateEntity(new Repository());
+const updateEntity = new UpdateEntity(new Repository());
+const createQuizItem = new CreateQuizItem(new Repository(), createEntity, updateEntity);
 
 describe('QuizItem', function () {
-    // const rep = new Repository();
-    describe('Add a QuizItem', function () {
-        it('should add a QuizItem', function () {
-            return quizItemUseCases.create({
+    describe('Create QuizItem', function () {
+        it('should create a valid QuizItem', function () {
+            return createQuizItem.execute({
                 lang: 'ro',
                 entity: { id: 'Q1', lang: 'ro', label: 'Moldova' },
                 property: { id: 'P12', type: 'ENTITY', values: [{ value: 'Q2', entity: { id: 'Q2', lang: 'ro', label: 'label' } }] }
             });
         })
-        it('should not add a QuizItem', function () {
-            return quizItemUseCases.create(null).then(() => { assert.fail() }, e => assert.ok(e));
+        it('should NOT create a null QuizItem', function () {
+            return createQuizItem.execute(null).then(() => { assert.fail() }, e => assert.ok(e));
         })
     })
 })

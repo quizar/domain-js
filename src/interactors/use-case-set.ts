@@ -1,11 +1,11 @@
 
 import { Bluebird } from '../utils';
-import { IRepository, RepAccessOptions, RepUpdateOptions, RepUpdateData } from './repository';
-import { IValidator } from '../entities/validator';
+import { Repository, RepAccessOptions, RepUpdateOptions, RepUpdateData } from './repository';
+import { BaseValidator } from '../entities/validator';
 
-export class UseCaseSet<T, R extends IRepository<T>> {
+export class UseCaseSet<T, R extends Repository<T>> {
 
-    constructor(protected readonly repository: R, private validator: IValidator<T>) {
+    constructor(protected readonly repository: R, private validator: BaseValidator<T>) {
     }
 
     create(data: T, options?: RepAccessOptions): Bluebird<T> {
