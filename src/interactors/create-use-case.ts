@@ -11,7 +11,11 @@ export class CreateUseCase<RESULT> extends BaseUseCase<RESULT, RESULT, RepAccess
     }
 
     protected innerExecute(data: RESULT, options?: RepAccessOptions): Bluebird<RESULT> {
-        return Bluebird.try(() => this.validator.create(data)).then((vdata) => this.repository.create(vdata, options));
+        return this.repository.create(data, options);
+    }
+
+    protected validateData(data: RESULT): Bluebird<RESULT> {
+        return Bluebird.try(() => this.validator.create(data));
     }
 
 }

@@ -11,7 +11,11 @@ export class UpdateUseCase<RESULT> extends BaseUseCase<RepUpdateData<RESULT>, RE
     }
 
     protected innerExecute(data: RepUpdateData<RESULT>, options?: RepUpdateOptions): Bluebird<RESULT> {
-        return Bluebird.try(() => this.validator.update(data)).then((vdata) => this.repository.update(vdata, options));
+        return this.repository.update(data, options);
+    }
+
+    protected validateData(data: RepUpdateData<RESULT>): Bluebird<RepUpdateData<RESULT>> {
+        return Bluebird.try(() => this.validator.update(data));
     }
 
 }

@@ -28,15 +28,6 @@ export class CreateQuizItem extends CreateUseCase<QuizItem>{
     }
 
     innerExecute(data: QuizItem, options?: RepAccessOptions): Bluebird<QuizItem> {
-        if (!data || !data.property || !data.entity) {
-            return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
-        }
-        try {
-            data.id = CreateQuizItem.createId(data);
-        } catch (e) {
-            return Bluebird.reject(e);
-        }
-
         return Bluebird.resolve(formatPropertyEntities(data))
             .then(entities => entities.concat([data.entity]))
             .then(entities => prepareTopics(data.topics).then(topics => entities.concat(topics)))
@@ -51,5 +42,18 @@ export class CreateQuizItem extends CreateUseCase<QuizItem>{
 
                 return quizItem;
             }));
+    }
+
+    protected initData(data: QuizItem): Bluebird<QuizItem> {
+        if (!data || !data.property || !data.entity) {
+            return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
+        }
+        try {
+            data.id = CreateQuizItem.createId(data);
+        } catch (e) {
+            return Bluebird.reject(e);
+        }
+
+        return Bluebird.resolve(data);
     }
 }

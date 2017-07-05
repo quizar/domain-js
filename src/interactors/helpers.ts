@@ -2,6 +2,7 @@
 import { Bluebird, _ } from '../utils';
 import { WikiEntity, QuizItem } from '../entities';
 import { DataValidationError } from '../errors';
+import { QuizItemRepository } from './repository';
 
 export function prepareTopics(topics: WikiEntity[]): Bluebird<WikiEntity[]> {
     if (!topics || !topics.length) {
@@ -33,4 +34,12 @@ export function formatPropertyEntities(data: QuizItem): WikiEntity[] {
     }
 
     return entities;
+}
+
+export function notExistsQuizItems(quizItemRep: QuizItemRepository, items: string[]): Bluebird<string[]> {
+    items = items || [];
+    if (items.length === 0) {
+        return Bluebird.resolve([]);
+    }
+    return Bluebird.map(items, item => quizItemRep.exists(item).then(exists => exists ? null : item)).then(result => result.filter(item => !!item));
 }
