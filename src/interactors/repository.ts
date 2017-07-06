@@ -1,6 +1,7 @@
 
 import { Bluebird, IPlainObject } from '../utils';
 import { QuizItem, WikiEntity, Quiz, QuizItemInfo } from '../entities';
+import { DataKeys } from './data-keys';
 
 export interface RepAccessOptions {
     /**
@@ -19,31 +20,29 @@ export interface RepUpdateData<T> {
     // inc?: { [index: string]: number }
 }
 
-// const obj: RepUpdateData<WikiEntity> = { item: {} };
-// obj.delete=['id'];
-
 export interface RootRepository {
     remove(id: string): Bluebird<boolean>
     exists(id: string): Bluebird<boolean>
+    count(keys?: DataKeys): Bluebird<number>
 }
 
 export interface Repository<T> extends RootRepository {
     create(data: T, options?: RepAccessOptions): Bluebird<T>
     update(data: RepUpdateData<T>, options?: RepUpdateOptions): Bluebird<T>
+    get(keys: DataKeys, options?: RepAccessOptions): Bluebird<T>
+    list(keys: DataKeys, options?: RepAccessOptions): Bluebird<T[]>
+
     getById(id: string, options?: RepAccessOptions): Bluebird<T>
 }
 
-export interface TopicCountRepository<T> extends Repository<T> {
-    countByTopicId(topicId: string): Bluebird<number>
-}
+export interface QuizItemRepository extends Repository<QuizItem> {
 
-export interface QuizItemRepository extends TopicCountRepository<QuizItem> {
 }
 
 export interface WikiEntityRepository extends Repository<WikiEntity> {
 
 }
 
-export interface QuizRepository extends TopicCountRepository<Quiz> {
+export interface QuizRepository extends Repository<Quiz> {
 
 }

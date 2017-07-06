@@ -3,7 +3,7 @@ const debug = require('debug')('quizar-domain');
 import { Bluebird, md5, _ } from '../../utils';
 import { QuizItem, WikiEntity } from '../../entities';
 import { QuizItemFields } from '../../entities/entity-fields';
-import { Repository, RepAccessOptions, RepUpdateData, RepUpdateOptions, TopicCountRepository } from '../repository';
+import { Repository, RepAccessOptions, RepUpdateData, RepUpdateOptions } from '../repository';
 import { UpdateUseCase } from '../update-use-case';
 import { QuizItemValidator } from '../../entities/validator';
 import { DataValidationError, DataConflictError, DataNotFoundError } from '../../errors';
@@ -14,7 +14,7 @@ import { SetTopicCount } from '../set-topic-count';
 export class UpdateQuizItem extends UpdateUseCase<QuizItem>{
     private setTopicCount: SetTopicCount<QuizItem>;
 
-    constructor(repository: TopicCountRepository<QuizItem>, private createEntity: CreateEntity, updateEntity: UpdateEntity) {
+    constructor(repository: Repository<QuizItem>, private createEntity: CreateEntity, updateEntity: UpdateEntity) {
         super('UpdateQuizItem', repository, QuizItemValidator.instance);
 
         this.setTopicCount = new SetTopicCount<QuizItem>(updateEntity, repository, 'countQuizItems');
