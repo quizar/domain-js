@@ -20,6 +20,11 @@ export interface RepUpdateData<T> {
     // inc?: { [index: string]: number }
 }
 
+export type RepListData = {
+    keys: DataKeys
+    count: number
+}
+
 export interface RootRepository {
     remove(id: string): Bluebird<boolean>
     exists(id: string): Bluebird<boolean>
@@ -30,7 +35,7 @@ export interface Repository<T> extends RootRepository {
     create(data: T, options?: RepAccessOptions): Bluebird<T>
     update(data: RepUpdateData<T>, options?: RepUpdateOptions): Bluebird<T>
     get(keys: DataKeys, options?: RepAccessOptions): Bluebird<T>
-    list(keys: DataKeys, options?: RepAccessOptions): Bluebird<T[]>
+    list(data: RepListData, options?: RepAccessOptions): Bluebird<T[]>
 
     getById(id: string, options?: RepAccessOptions): Bluebird<T>
 }
