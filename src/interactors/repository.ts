@@ -41,7 +41,7 @@ export interface Repository<T> extends RootRepository {
 }
 
 export interface QuizItemRepository extends Repository<QuizItem> {
-
+    countByTopicId(topicId: string): Bluebird<number>
 }
 
 export interface WikiEntityRepository extends Repository<WikiEntity> {
@@ -49,5 +49,5 @@ export interface WikiEntityRepository extends Repository<WikiEntity> {
 }
 
 export interface QuizRepository extends Repository<Quiz> {
-
+    countByTopicId(topicId: string): Bluebird<number>
 }
