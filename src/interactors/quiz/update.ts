@@ -36,9 +36,8 @@ export class QuizUpdate extends UpdateUseCase<Quiz>{
                         .then(deletedTopics => itemData.topics.concat(deletedTopics));
                 }
             })
-            .then(updatedTopics => prepareTopics(itemData.topics)
-                .map(entity => this.createEntity.execute(entity).catch(DataConflictError, error => debug('trying to add an existing entity')))
-                .return(notExistsQuizItems(this.quizItemRepository, itemData.items && itemData.items.map(item => item.item.id) || [])
+            .then(updatedTopics => prepareTopics(itemData.topics).map(entity => this.createEntity.execute(entity).catch(DataConflictError, error => debug('trying to add an existing entity')))
+                .then(() => notExistsQuizItems(this.quizItemRepository, itemData.items && itemData.items.map(item => item.item.id) || [])
                     .then(notExists => {
                         if (notExists.length) {
                             return Bluebird.reject(new DataNotFoundError({ message: `Not found QuizItem id in ${notExists}` }));
