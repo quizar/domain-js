@@ -1,6 +1,6 @@
 
 import { Bluebird, IPlainObject } from '../utils';
-import { QuizItem, WikiEntity, Quiz, QuizItemInfo } from '../entities';
+import { QuizItem, WikiEntity, Quiz, QuizItemInfo, OneEntityType } from '../entities';
 import { DataKeys } from './data-keys';
 
 export interface RepAccessOptions {
@@ -25,29 +25,34 @@ export type RepListData = {
     count: number
 }
 
-export interface RootRepository {
-    remove(id: string): Bluebird<boolean>
-    exists(id: string): Bluebird<boolean>
-    count(keys?: DataKeys): Bluebird<number>
+export interface RepGetData extends DataKeys {
+
 }
 
-export interface Repository<T> extends RootRepository {
+export interface RootRepository {
+    delete(id: string): Bluebird<boolean>
+    // exists(id: string): Bluebird<boolean>
+    count(data?: RepGetData): Bluebird<number>
+}
+
+export interface Repository<T extends OneEntityType> extends RootRepository {
     create(data: T, options?: RepAccessOptions): Bluebird<T>
     update(data: RepUpdateData<T>, options?: RepUpdateOptions): Bluebird<T>
-    get(keys: DataKeys, options?: RepAccessOptions): Bluebird<T>
+    one(data: RepGetData, options?: RepAccessOptions): Bluebird<T>
     list(data: RepListData, options?: RepAccessOptions): Bluebird<T[]>
 
     getById(id: string, options?: RepAccessOptions): Bluebird<T>
 }
 
-export interface QuizItemRepository extends Repository<QuizItem> {
+export interface TopicCountRepository<T> extends Repository<T> {
     countByTopicId(topicId: string): Bluebird<number>
+}
+
+export interface QuizItemRepository extends TopicCountRepository<QuizItem> {
+}
+
+export interface QuizRepository extends TopicCountRepository<Quiz> {
 }
 
 export interface WikiEntityRepository extends Repository<WikiEntity> {
-
-}
-
-export interface QuizRepository extends Repository<Quiz> {
-    countByTopicId(topicId: string): Bluebird<number>
 }

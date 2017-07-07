@@ -5,22 +5,20 @@ import { Quiz, WikiEntity, QuizItemInfo } from '../../entities';
 import { QuizFields } from '../../entities/entity-fields';
 import { Repository, RepAccessOptions, RepUpdateData, RepUpdateOptions } from '../repository';
 import { BaseUseCase } from '../use-case';
-import { validate } from '../../entities/validator';
-import { createQuizItemInfo } from '../../entities/validate-schema';
 import { DataValidationError, DataConflictError, DataNotFoundError } from '../../errors';
-import { CreateEntity, UpdateEntity } from '../entity';
+import { EntityCreate, EntityUpdate } from '../entity';
 import { prepareTopics, formatPropertyEntities, notExistsQuizItems } from '../helpers';
-import { UpdateQuiz } from './update';
+import { QuizUpdate } from './update';
 
 export type AddQuizItemData = {
     quizId: string
     info: QuizItemInfo
 }
 
-export class AddQuizItem extends BaseUseCase<AddQuizItemData, boolean, null>{
+export class QuizAddQuizItem extends BaseUseCase<AddQuizItemData, boolean, null>{
 
-    constructor(private repository: Repository<Quiz>, private updateQuiz: UpdateQuiz) {
-        super('AddQuizItem');
+    constructor(private repository: Repository<Quiz>, private updateQuiz: QuizUpdate) {
+        super('QuizAddQuizItem');
     }
 
     protected innerExecute(data: AddQuizItemData): Bluebird<boolean> {
@@ -45,9 +43,5 @@ export class AddQuizItem extends BaseUseCase<AddQuizItemData, boolean, null>{
             debug('addQuizItemInfo updating quiz items');
             return this.updateQuiz.execute({ item: { id: quizId, items: quiz.items } }).return(true);
         });
-    }
-
-    protected validateData(data: AddQuizItemData): Bluebird<AddQuizItemData> {
-        return Bluebird.try(() => validate(createQuizItemInfo, data.info)).then(vdata => ({ info: vdata, quizId: data.quizId }));
     }
 }

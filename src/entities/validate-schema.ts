@@ -145,6 +145,6 @@ const updateQuizObj = createDescriptionSchema.keys({
 export const createWikiEntity = createWikiEntityObj.required();
 export const createQuizItem = createQuizItemObj.required();
 export const createQuiz = createQuizObj.required();
-export const createQuizItemInfo = createQuizItemInfoObj.required();
+// export const createQuizItemInfo = createQuizItemInfoObj.required();
 export const updateWikiEntity = updateWikiEntityObj.required();
 export const updateQuiz = updateQuizObj.required();

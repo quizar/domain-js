@@ -3,21 +3,21 @@ const debug = require('debug')('quizar-domain');
 import { Bluebird, md5, _ } from '../../utils';
 import { Quiz, WikiEntity } from '../../entities';
 import { QuizFields } from '../../entities/entity-fields';
-import { Repository, RepAccessOptions, RepUpdateData, RepUpdateOptions, QuizItemRepository } from '../repository';
+import { Repository, RepAccessOptions, RepUpdateData, RepUpdateOptions, QuizItemRepository, TopicCountRepository } from '../repository';
 import { UpdateUseCase } from '../update-use-case';
 import { QuizItemValidator } from '../../entities/validator';
 import { DataValidationError, DataConflictError, DataNotFoundError } from '../../errors';
-import { CreateEntity, UpdateEntity } from '../entity';
+import { EntityCreate, EntityUpdate } from '../entity';
 import { prepareTopics, formatPropertyEntities, notExistsQuizItems } from '../helpers';
-import { SetTopicCount } from '../set-topic-count';
+import { SetTopicCountUseCase } from '../set-topic-count-use-case';
 
-export class UpdateQuiz extends UpdateUseCase<Quiz>{
-    private setTopicCount: SetTopicCount<Quiz>;
+export class QuizUpdate extends UpdateUseCase<Quiz>{
+    private setTopicCount: SetTopicCountUseCase<Quiz>;
 
-    constructor(repository: Repository<Quiz>, private quizItemRepository: QuizItemRepository, private createEntity: CreateEntity, updateEntity: UpdateEntity) {
-        super('UpdateQuiz', repository, QuizItemValidator.instance);
+    constructor(repository: TopicCountRepository<Quiz>, private quizItemRepository: QuizItemRepository, private createEntity: EntityCreate, updateEntity: EntityUpdate) {
+        super('QuizUpdate', repository, QuizItemValidator.instance);
 
-        this.setTopicCount = new SetTopicCount<Quiz>(updateEntity, repository, 'countQuizzes');
+        this.setTopicCount = new SetTopicCountUseCase<Quiz>(updateEntity, repository, 'countQuizzes');
     }
 
     protected innerExecute(data: RepUpdateData<Quiz>, options?: RepUpdateOptions): Bluebird<Quiz> {

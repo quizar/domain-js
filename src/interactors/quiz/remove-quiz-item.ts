@@ -5,22 +5,20 @@ import { Quiz, WikiEntity, QuizItemInfo } from '../../entities';
 import { QuizFields } from '../../entities/entity-fields';
 import { Repository, RepAccessOptions, RepUpdateData, RepUpdateOptions } from '../repository';
 import { BaseUseCase } from '../use-case';
-import { validate } from '../../entities/validator';
-import { createQuizItemInfo } from '../../entities/validate-schema';
 import { DataValidationError, DataConflictError, DataNotFoundError } from '../../errors';
-import { CreateEntity, UpdateEntity } from '../entity';
+import { EntityCreate, EntityUpdate } from '../entity';
 import { prepareTopics, formatPropertyEntities, notExistsQuizItems } from '../helpers';
-import { UpdateQuiz } from './update';
+import { QuizUpdate } from './update';
 
 export type RemoveQuizItemData = {
     quizId: string
     quizItemId: string
 }
 
-export class RemoveQuizItem extends BaseUseCase<RemoveQuizItemData, boolean, null>{
+export class QuizRemoveQuizItem extends BaseUseCase<RemoveQuizItemData, boolean, null>{
 
-    constructor(private repository: Repository<Quiz>, private updateQuiz: UpdateQuiz) {
-        super('RemoveQuizItem');
+    constructor(private repository: Repository<Quiz>, private updateQuiz: QuizUpdate) {
+        super('QuizRemoveQuizItem');
     }
 
     protected innerExecute(data: RemoveQuizItemData): Bluebird<boolean> {
@@ -45,6 +43,12 @@ export class RemoveQuizItem extends BaseUseCase<RemoveQuizItemData, boolean, nul
     }
 
     protected validateData(data: RemoveQuizItemData): Bluebird<RemoveQuizItemData> {
+        if (typeof data.quizId !== 'string') {
+            return Bluebird.reject(new DataValidationError({ message: `Invalid quizId field` }));
+        }
+        if (typeof data.quizItemId !== 'string') {
+            return Bluebird.reject(new DataValidationError({ message: `Invalid quizItemId field` }));
+        }
         return Bluebird.resolve(data);
     }
 }

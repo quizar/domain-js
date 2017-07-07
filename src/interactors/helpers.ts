@@ -1,6 +1,7 @@
 
 import { Bluebird, _ } from '../utils';
 import { WikiEntity, QuizItem } from '../entities';
+import { QuizItemFields } from '../entities/entity-fields';
 import { DataValidationError } from '../errors';
 import { QuizItemRepository } from './repository';
 
@@ -41,5 +42,5 @@ export function notExistsQuizItems(quizItemRep: QuizItemRepository, items: strin
     if (items.length === 0) {
         return Bluebird.resolve([]);
     }
-    return Bluebird.map(items, item => quizItemRep.exists(item).then(exists => exists ? null : item)).then(result => result.filter(item => !!item));
+    return Bluebird.map(items, item => quizItemRep.getById(item, { fields: [QuizItemFields.id] }).then(quizItem => (!!quizItem) ? null : item)).then(result => result.filter(item => !!item));
 }

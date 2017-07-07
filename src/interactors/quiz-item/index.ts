@@ -1,4 +1,4 @@
 
-export { CreateQuizItem } from './create';
-export { UpdateQuizItem } from './update';
-export { DeleteQuizItem } from './delete';
+export { QuizItemCreate } from './create';
+export { QuizItemUpdate } from './update';
+export { QuizItemDelete } from './delete';

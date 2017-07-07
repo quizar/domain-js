@@ -1,3 +1,3 @@
 
-export { CreateEntity } from './create';
-export { UpdateEntity } from './update';
+export { EntityCreate } from './create';
+export { EntityUpdate } from './update';

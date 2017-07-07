@@ -1,5 +1,5 @@
 
-const { CreateQuizItem, CreateEntity, UpdateEntity } = require('../lib')
+const { QuizItemCreate, EntityCreate, EntityUpdate } = require('../lib')
 const assert = require('assert')
 const Bluebird = require('bluebird')
 
@@ -15,9 +15,9 @@ class Repository {
     }
 }
 
-const createEntity = new CreateEntity(new Repository());
-const updateEntity = new UpdateEntity(new Repository());
-const createQuizItem = new CreateQuizItem(new Repository(), createEntity, updateEntity);
+const createEntity = new EntityCreate(new Repository());
+const updateEntity = new EntityUpdate(new Repository());
+const createQuizItem = new QuizItemCreate(new Repository(), createEntity, updateEntity);
 
 describe('QuizItem', function () {
     describe('Create QuizItem', function () {

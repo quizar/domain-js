@@ -2,21 +2,21 @@
 const debug = require('debug')('quizar-domain');
 import { Bluebird, md5, _ } from '../../utils';
 import { QuizItem, WikiEntity } from '../../entities';
-import { Repository, RepAccessOptions } from '../repository';
+import { Repository, RepAccessOptions, TopicCountRepository } from '../repository';
 import { CreateUseCase } from '../create-use-case';
 import { QuizItemValidator } from '../../entities/validator';
 import { DataValidationError, DataConflictError } from '../../errors';
-import { CreateEntity, UpdateEntity } from '../entity';
+import { EntityCreate, EntityUpdate } from '../entity';
 import { prepareTopics, formatPropertyEntities } from '../helpers';
-import { SetTopicCount } from '../set-topic-count';
+import { SetTopicCountUseCase } from '../set-topic-count-use-case';
 
-export class CreateQuizItem extends CreateUseCase<QuizItem>{
-    private setTopicCount: SetTopicCount<QuizItem>;
+export class QuizItemCreate extends CreateUseCase<QuizItem>{
+    private setTopicCount: SetTopicCountUseCase<QuizItem>;
 
-    constructor(repository: Repository<QuizItem>, private createEntity: CreateEntity, updateEntity: UpdateEntity) {
-        super('CreateQuizItem', repository, QuizItemValidator.instance);
+    constructor(repository: TopicCountRepository<QuizItem>, private createEntity: EntityCreate, updateEntity: EntityUpdate) {
+        super('QuizItemCreate', repository, QuizItemValidator.instance);
 
-        this.setTopicCount = new SetTopicCount<QuizItem>(updateEntity, repository, 'countQuizItems');
+        this.setTopicCount = new SetTopicCountUseCase<QuizItem>(updateEntity, repository, 'countQuizItems');
     }
 
     static createId(data: QuizItem): string {
@@ -49,11 +49,11 @@ export class CreateQuizItem extends CreateUseCase<QuizItem>{
             return Bluebird.reject(new DataValidationError({ message: 'Invalid data' }));
         }
         try {
-            data.id = CreateQuizItem.createId(data);
+            data.id = QuizItemCreate.createId(data);
         } catch (e) {
             return Bluebird.reject(e);
         }
 
-        return Bluebird.resolve(data);
+        return super.initData(data);
     }
 }

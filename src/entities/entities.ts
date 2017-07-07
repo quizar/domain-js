@@ -111,3 +111,5 @@ export type Quiz = {
     createdAt?: number
     updatedAt?: number
 }
+
+export type OneEntityType = WikiEntity | QuizItem | Quiz;

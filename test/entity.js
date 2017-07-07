@@ -1,5 +1,5 @@
 
-const { WikiEntity, CreateEntity } = require('../lib');
+const { WikiEntity, EntityCreate } = require('../lib');
 const assert = require('assert');
 const Bluebird = require('bluebird');
 
@@ -15,7 +15,7 @@ class Repository {
     }
 }
 
-const createEntity = new CreateEntity(new Repository());
+const createEntity = new EntityCreate(new Repository());
 
 describe('Entity', function () {
     describe('CreateEntity', function () {

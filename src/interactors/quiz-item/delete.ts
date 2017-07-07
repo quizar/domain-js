@@ -4,8 +4,8 @@ import { QuizItem } from '../../entities';
 import { Repository } from '../repository';
 import { DeleteUseCase } from '../delete-use-case';
 
-export class DeleteQuizItem extends DeleteUseCase {
+export class QuizItemDelete extends DeleteUseCase {
     constructor(repository: Repository<QuizItem>) {
-        super('DeleteQuizItem', repository);
+        super('QuizItemDelete', repository);
     }
 }
