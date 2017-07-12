@@ -19,19 +19,11 @@ export function prepareTopics(topics: WikiEntity[]): Bluebird<WikiEntity[]> {
 export function formatPropertyEntities(data: QuizItem): WikiEntity[] {
     const entities: WikiEntity[] = [];
 
-    if (data.property && data.property.values) {
-        data.property.values.forEach(value => {
-            if (value.entity) {
-                entities.push(value.entity);
-            }
-            if (value.qualifiers && value.qualifiers.length) {
-                value.qualifiers.forEach(qualifier => {
-                    if (qualifier.entity) {
-                        entities.push(qualifier.entity);
-                    }
-                });
-            }
-        });
+    if (data.property && data.property.entity) {
+        entities.push(data.property.entity);
+    }
+    if (data.qualifier && data.qualifier.entity) {
+        entities.push(data.qualifier.entity);
     }
 
     return entities;

@@ -21,7 +21,7 @@ export class QuizItemCreate extends CreateUseCase<QuizItem>{
 
     static createId(data: QuizItem): string {
         try {
-            return md5([data.entity.id.trim().toUpperCase(), data.property.id.trim().toUpperCase()].join('|'));
+            return md5([data.entity.id.trim().toUpperCase(), data.property.id.trim().toUpperCase(), data.qualifier && data.qualifier.id || '-'].join('|'));
         } catch (e) {
             throw new DataValidationError({ error: e, message: 'entity and property are required' });
         }
