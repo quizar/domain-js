@@ -1,5 +1,5 @@
 
-import { PlainObject } from '../utils';
+import { AnyPlainObject } from '../utils';
 
 export interface ErrorDefaultData {
     statusCode?: number
@@ -8,7 +8,7 @@ export interface ErrorDefaultData {
 
 export interface ErrorData extends ErrorDefaultData {
     error?: Error
-    data?: PlainObject
+    data?: AnyPlainObject
     details?: string
 }
 

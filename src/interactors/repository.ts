@@ -1,5 +1,5 @@
 
-import { Bluebird, IPlainObject } from '../utils';
+import { Bluebird, PlainObject } from '../utils';
 import { QuizItem, WikiEntity, Quiz, QuizItemInfo, OneEntityType } from '../entities';
 import { DataKeys } from './data-keys';
 

@@ -1,11 +1,11 @@
 
-import { IPlainObject, createEnum } from '../utils'
+import { PlainObject, createEnum, StringPlainObject } from '../utils'
 
 export const ENTITY_NAMES = createEnum(['WikiEntity', 'QuizItem', 'Quiz'])
 export type EntityNameType = ENTITY_NAMES;
 export type ENTITY_NAMES = keyof typeof ENTITY_NAMES
 
-export const PropertyValueType = createEnum(['STRING', 'NUMBER', 'ENTITY'])
+export const PropertyValueType = createEnum(['STRING', 'NUMBER', 'ENTITY', 'DATE', 'WIKI-IMAGE'])
 export type PropertyValueType = keyof typeof PropertyValueType
 
 export const QuizTarget = createEnum(['PVALUE', 'QVALUE'])
@@ -34,7 +34,7 @@ export type WikiEntity = {
     abbr?: string
     description?: string
     aliases?: string[]
-    props?: IPlainObject<string[]>
+    props?: PlainObject<string[]>
     type?: WikiEntityType
     types?: string[]
     pageTitle?: string
@@ -101,4 +101,55 @@ export type Quiz = {
     updatedAt?: number
 }
 
-export type OneEntityType = WikiEntity | QuizItem | Quiz;
+// export type DataQueryParamsType = IPlainObject<string> | IPlainObject<string>[]
+
+export const QuestionFormat = createEnum(['VALUE', 'YESNO', 'IMAGE'])
+export type QuestionFormat = keyof typeof QuestionFormat
+
+export const QuestionValueFormat = createEnum(['NAME', 'ENTIPIC', 'WIKIIMAGE'])
+export type QuestionValueFormat = keyof typeof QuestionValueFormat
+
+export type QuestionSourceData = {
+    subject?: string
+    predicate?: string
+    object?: string
+    adverbs?: StringPlainObject
+}
+
+export type QuestionSource = {
+    /** SPARQL query id */
+    queryId?: string
+    /** query params */
+    queryParams?: StringPlainObject
+    /** data question id */
+    questionId?: string
+    /** question data */
+    data?: QuestionSourceData
+    /** value data property */
+    dataValue?: string
+}
+
+export type QuestionValue = {
+    value: string
+    entity?: WikiEntity
+}
+
+export type Question = {
+    id?: string
+    lang?: string
+    title?: string
+    question?: string
+    format?: QuestionFormat
+    difficulty?: number
+    source?: QuestionSource
+    sourceHash?: string
+    valueType?: PropertyValueType
+    valueFormat?: QuestionValueFormat
+    values: QuestionValue[]
+    topics?: WikiEntity[]
+    createAt?: number
+    updatedAt?: number
+    dataUpdatedAt?: number
+}
+
+export type OneEntityType = WikiEntity | QuizItem | Quiz | Question;

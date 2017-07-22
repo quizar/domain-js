@@ -1,7 +1,7 @@
 
 const objectMapper = require('object-mapper');
 const cleanDeep = require('clean-deep');
-import { IPlainObject } from '../utils';
+import { PlainObject } from '../utils';
 
 export interface IEntityMapper<DE, E> {
     fromDomainEntity(data: DE): E
@@ -10,7 +10,7 @@ export interface IEntityMapper<DE, E> {
     toDomainEntityField(fieldName: string): string
 }
 
-export type ObjectMapperInfo = IPlainObject<string | string[]>;
+export type ObjectMapperInfo = PlainObject<string | string[]>;
 
 export class EntityMapper<DE, E> implements IEntityMapper<DE, E> {
     constructor(private fromEntityMap: ObjectMapperInfo, private toEntityMap: ObjectMapperInfo) { }

@@ -1,9 +1,9 @@
 
-import { IPlainObject } from '../utils';
+import { PlainObject } from '../utils';
 import { CodeError } from '../errors';
 import { ENTITY_NAMES } from './entities';
 
-export type MapInfo = IPlainObject<string | string[]>;
+export type MapInfo = PlainObject<string | string[]>;
 export type TypeMapInfo = { toDomainEntity: MapInfo, fromDomainEntity: MapInfo };
 
 export interface EntityTypeMapperBuild {
@@ -11,7 +11,7 @@ export interface EntityTypeMapperBuild {
 }
 
 export class EntityMapperContainer {
-    private MAPPERS_INFO: IPlainObject<TypeMapInfo> = {};
+    private MAPPERS_INFO: PlainObject<TypeMapInfo> = {};
 
     constructor(private validTypeNames: string[] = [ENTITY_NAMES.Quiz, ENTITY_NAMES.QuizItem, ENTITY_NAMES.WikiEntity]) {
 
