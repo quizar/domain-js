@@ -5,7 +5,7 @@ export const ENTITY_NAMES = createEnum(['WikiEntity', 'QuizItem', 'Quiz'])
 export type EntityNameType = ENTITY_NAMES;
 export type ENTITY_NAMES = keyof typeof ENTITY_NAMES
 
-export const PropertyValueType = createEnum(['STRING', 'NUMBER', 'ENTITY', 'DATE', 'WIKI-IMAGE'])
+export const PropertyValueType = createEnum(['STRING', 'NUMBER', 'ENTITY', 'DATE', 'WIKIIMAGE', 'BOOLEAN'])
 export type PropertyValueType = keyof typeof PropertyValueType
 
 export const QuizTarget = createEnum(['PVALUE', 'QVALUE'])
