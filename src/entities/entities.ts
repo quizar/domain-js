@@ -106,7 +106,7 @@ export type Quiz = {
 export const QuestionFormat = createEnum(['VALUE', 'YESNO', 'IMAGE'])
 export type QuestionFormat = keyof typeof QuestionFormat
 
-export const QuestionValueFormat = createEnum(['NAME', 'ENTIPIC', 'WIKIIMAGE'])
+export const QuestionValueFormat = createEnum(['VALUE', 'NAME', 'IMAGE'])
 export type QuestionValueFormat = keyof typeof QuestionValueFormat
 
 export type QuestionSourceData = {
@@ -138,7 +138,8 @@ export type Question = {
     id?: string
     lang?: string
     title?: string
-    question?: string
+    titleHash?: string
+    description?: string
     format?: QuestionFormat
     difficulty?: number
     source?: QuestionSource
