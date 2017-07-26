@@ -134,6 +134,16 @@ export type QuestionValue = {
     entity?: WikiEntity
 }
 
+export enum QuestionCategory {
+    ART = 1,
+    SCIENCE = 2,
+    TECH = 3,
+    SPORTS = 4,
+    ENTERTAINMENT = 5,
+    GEOGRAPHY = 6,
+    HISTORY = 7
+}
+
 export type Question = {
     id?: string
     lang?: string
@@ -148,6 +158,7 @@ export type Question = {
     valueFormat?: QuestionValueFormat
     values: QuestionValue[]
     topics?: WikiEntity[]
+    category?: QuestionCategory
     createAt?: number
     updatedAt?: number
     dataUpdatedAt?: number
